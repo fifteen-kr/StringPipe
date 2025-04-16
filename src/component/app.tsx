@@ -1,5 +1,10 @@
+import "./pipe";
+import { Pipeline } from "./pipe";
+
 export function App() {
-    return <p>TODO</p>;
+    return <div className="sp-app">
+        <Pipeline />
+    </div>;
 }
 
 export function Root() {

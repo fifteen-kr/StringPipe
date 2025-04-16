@@ -1,6 +1,8 @@
 import "./reset.css";
 import "./index.css";
 
+import "./pipe/";
+
 import {createElement, render} from "preact";
 
 import {Root} from "@/component/app";
