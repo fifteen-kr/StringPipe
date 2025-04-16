@@ -1,3 +1,11 @@
+import {BasePipe} from "./base";
+
+export interface PipeStringInputProps {
+    onChange: (value: string) => void;
+}
+
 export function PipeStringInput() {
-    return <div className="sp-pipe-input">TODO</div>;
+    return <BasePipe className="sp-pipe-input" title="String Input">
+        Test Input
+    </BasePipe>;
 }

@@ -1,3 +1,11 @@
+import {BasePipe} from "./base";
+
+export interface PipeStringOutputProps {
+    value: string;
+}
+
 export function PipeStringOutput() {
-    return <div className="sp-pipe-output">TODO</div>;
+    return <BasePipe className="sp-pipe-output" title="String Output">
+        Test Output
+    </BasePipe>;
 }
