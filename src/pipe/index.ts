@@ -1,2 +1,1 @@
-export * from "./schema";
-export * from "./common";
+export type * from "./type";

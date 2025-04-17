@@ -1,11 +1,18 @@
 import {BasePipe} from "./base";
 
-export interface PipeStringInputProps {
-    onChange: (value: string) => void;
+export interface StringInputPipeProps {
+    onOutputChange?: (output: string) => void;
 }
 
-export function PipeStringInput() {
-    return <BasePipe className="sp-pipe-input" title="String Input">
-        Test Input
+export function StringInputPipe({onOutputChange}: StringInputPipeProps) {
+    return <BasePipe
+        title="String Input"
+        className="sp-pipe-input"
+        
+        inputType="null"
+        outputType="string"
+
+        onOutputChange={onOutputChange}
+    >
     </BasePipe>;
 }
