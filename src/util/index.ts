@@ -7,3 +7,5 @@
 export function classNames(...args: Array<string|null|undefined|false|0>): string {
     return args.filter((s) => !!s).join(' ');
 }
+
+export const uuidv4 = crypto.randomUUID.bind(crypto);

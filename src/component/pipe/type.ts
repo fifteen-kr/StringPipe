@@ -1,4 +1,4 @@
-import type { ReactElement } from "preact/compat";
+import type { FunctionComponent } from "preact/compat";
 
 import type { DataType } from "@/pipe";
 
@@ -7,4 +7,4 @@ export interface PipeProps<InputType extends DataType, OutputType extends DataTy
     onOutputChange?: (output: OutputType) => void;
 }
 
-export type PipeComponent<InputType extends DataType, OutputType extends DataType> = (props: PipeProps<InputType, OutputType>) => ReactElement;
+export type PipeComponent<InputType extends DataType, OutputType extends DataType> = FunctionComponent<PipeProps<InputType, OutputType>>;
