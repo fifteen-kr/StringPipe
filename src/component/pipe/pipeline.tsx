@@ -23,15 +23,14 @@ export function Pipeline() {
         }];
     });
 
-    const handleOutputChange = useCallback((index: number, output: DataType) => {
-        setPipes((pipes) => [
-            ...pipes.slice(0, index),
-            {
-                ...pipes[index],
-                output,
-            },
-            ...pipes.slice(index+1),
-        ])
+    const handleOutputChange = useCallback((pipe_id: string, output: DataType) => {
+        setPipes((pipes) => pipes.map((pipe) => {
+            if(pipe.id === pipe_id) {
+                return { ...pipe, output };
+            } else {
+                return pipe;
+            }
+        }));
     }, [setPipes]);
 
     const [selected_catalog_pipe, setSelectedCatalogPipe] = useState<string | null>(null);
@@ -54,12 +53,18 @@ export function Pipeline() {
         setSelectedCatalogPipe(null);
     }, [setSelectedCatalogPipe, selected_catalog_pipe]);
 
+    const handleOnClickRemovePipe = useCallback((pipe_id: string) => {
+        setPipes((pipes) => pipes.filter(({id}) => id !== pipe_id));
+    }, [setPipes]);
+
     return <div class="sp-pipeline">
         { pipes.map(({id, pipe_def}, i) => {
+            if(pipe_def == null) debugger;
             return <pipe_def.Component
                 key={id}
-                inputValue={i === 0 ? null : pipes[i - 1].output}
-                onOutputChange={(output) => handleOutputChange(i, output)}
+                inputValue={pipe_def.inputType === 'null' ? null : pipes[i - 1].output}
+                onOutputChange={(output) => handleOutputChange(id, output)}
+                onClickRemove={() => handleOnClickRemovePipe(id)}
             />;
         }) }
         <PipeCatalog entries={PIPES} selectedEntryId={selected_catalog_pipe} onSelect={setSelectedCatalogPipe} />

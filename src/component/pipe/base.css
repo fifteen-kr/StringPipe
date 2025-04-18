@@ -5,7 +5,7 @@ div.sp-pipe {
     width: 100%;
     
     &:first-child {
-        border-radius: .5em .5em 0 0;
+        border-radius: var(--sp-pipeline-top-radius, 0) var(--sp-pipeline-top-radius, 0) 0 0;
     }
 
     textarea {
@@ -40,6 +40,29 @@ div.sp-pipe-header {
     flex-direction: row;
 
     padding: .2em .4em;
+
+    & > button {
+        cursor: pointer;
+
+        margin-left: auto;
+        margin-right: 0;
+
+        width: 1.6em;
+        border-radius: .5em;
+
+        background: none;
+        border: none;
+
+        transition: background .1s ease-in-out;
+
+        &:hover {
+            background: rgba(0, 0, 0, .1);
+        }
+
+        &:active {
+            background: rgba(0, 0, 0, .2);
+        }
+    }
 }
 
 div.sp-pipe-title {

@@ -7,6 +7,8 @@ export type AsDataTypeDefinition<T extends DataType|null> = T extends null ? "nu
 export interface PipeProps {
     inputValue?: DataType|null;
     onOutputChange?: (value: DataType) => void;
+
+    onClickRemove?: () => void;
 }
 
 export type PipeComponentType = ComponentType<PipeProps>;

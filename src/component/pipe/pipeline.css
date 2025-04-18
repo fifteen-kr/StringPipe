@@ -4,10 +4,13 @@ div.sp-pipeline {
 
     display: flex;
     flex-direction: column;
+
+    --sp-pipeline-top-radius: .75em;
 }
 
 @media (max-width: 800px) {
     div.sp-pipeline {
         width: 100%;
+        --sp-pipeline-top-radius: 0;
     }
 }

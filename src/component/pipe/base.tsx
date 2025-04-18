@@ -45,6 +45,8 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
 
         title,
         children,
+
+        onClickRemove,
     } = props;
 
     const [override_input, setOverrideInput] = useState(false);
@@ -80,6 +82,7 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
     return <div className={classNames("sp-pipe", class_name, `sp-pipe-input-${input_type}`, `sp-pipe-output-${output_type}`)}>
         <div className="sp-pipe-header">
             { title && <div className="sp-pipe-title">{ title }</div> }
+            { onClickRemove && <button title="Remove this pipe." onClick={onClickRemove}>X</button> }
         </div>
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
