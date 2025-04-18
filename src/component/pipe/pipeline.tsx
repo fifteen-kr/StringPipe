@@ -3,16 +3,15 @@ import "./pipeline.css";
 import { useCallback, useState } from "preact/hooks";
 
 import { uuidv4 } from "@/util";
-import type { DataType, PipeComponent } from "./type";
-
-import { ReverseStringPipe } from "./common";
+import type { DataType, PipeComponentType } from "./type";
 
 import { StringInputPipe } from "./string-input";
+import { PIPE_BY_ID, PipeCatalog, PIPES } from "./catalog";
 
 interface PipeState {
     id: string;
-    Component: PipeComponent;
-    output: DataType;
+    Component: PipeComponentType;
+    output: DataType|null;
 }
 
 export function Pipeline() {
@@ -20,11 +19,7 @@ export function Pipeline() {
         return [{
             id: uuidv4(),
             Component: StringInputPipe,
-            output: "",
-        }, {
-            id: uuidv4(),
-            Component: ReverseStringPipe,
-            output: "",
+            output: null,
         }];
     });
 
@@ -39,14 +34,35 @@ export function Pipeline() {
         ])
     }, [setPipes]);
 
+    const [selected_catalog_pipe, setSelectedCatalogPipe] = useState<string | null>(null);
+
+    const handleOnClickAddPipe = useCallback(() => {
+        if(selected_catalog_pipe == null) return;
+
+        const pipe_def = PIPE_BY_ID.get(selected_catalog_pipe);
+        if(pipe_def) {
+            setPipes((pipes) => [
+                ...pipes,
+                {
+                    id: uuidv4(),
+                    Component: pipe_def.Component,
+                    output: null
+                },
+            ]);
+        }
+
+        setSelectedCatalogPipe(null);
+    }, [setSelectedCatalogPipe, selected_catalog_pipe]);
+
     return <div class="sp-pipeline">
         { pipes.map(({id, Component}, i) => {
             return <Component
                 key={id}
-                inputValue={(i === 0 ? (void 0) : pipes[i - 1].output) as DataType}
+                inputValue={i === 0 ? null : pipes[i - 1].output}
                 onOutputChange={(output) => handleOutputChange(i, output)}
             />;
         }) }
-        <button>Add Pipe</button>
+        <PipeCatalog entries={PIPES} selectedEntryId={selected_catalog_pipe} onSelect={setSelectedCatalogPipe} />
+        <button onClick={handleOnClickAddPipe}>Add Pipe</button>
     </div>;
 }

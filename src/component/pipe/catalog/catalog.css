@@ -1,0 +1,12 @@
+div.sp-pipe-catalog {
+    margin-top: 1em;
+    border-top: solid 1px;
+}
+
+div.sp-pipe-catalog-item {
+    cursor: pointer;
+
+    &.sp-selected {
+        font-weight: bold;
+    }
+}

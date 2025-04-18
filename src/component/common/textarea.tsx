@@ -18,5 +18,5 @@ export function TextArea(props: TextAreaProps) {
         onChange(target.value);
     }, [onChange]);
 
-    return <textarea onInput={handleOnChange} />;
+    return <textarea onInput={handleOnChange} rows={4} />;
 }

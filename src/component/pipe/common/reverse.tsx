@@ -1,18 +1,14 @@
-import { BasePipe } from "../base";
-import { PipeComponent } from "../type";
+import { definePipe } from "../base";
 
-function reverseString(input: string): Promise<string> {
-    return Promise.resolve([...input].reverse().join(""));
-}
-
-export const ReverseStringPipe: PipeComponent = (props) => {
-    return <BasePipe
-        title="Reverse String"
-
-        inputType="string"
-        outputType="string"
-
-        pipeFunction={reverseString}
-        {...props}
-    ></BasePipe>;
-};
+export const ReverseStringPipe = definePipe<string, string, {}>(
+    {
+        id: "reverse-string",
+        name: "Reverse String",
+        description: "Reverse a string.",
+    
+        inputType: 'string',
+        outputType: 'string',
+    },
+    (input: string) => Promise.resolve([...input].reverse().join("")),
+    {},
+);

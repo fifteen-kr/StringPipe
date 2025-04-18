@@ -1,32 +1,7 @@
-import { ReverseStringPipe } from "../common";
-import type { PipeCatalogCategory } from "./type";
+import { PIPES_COMMON } from "../common";
 
-export const PIPE_CATALOG_DATA = [
-    {
-        id: 'common',
-        name: "Common",
+export const PIPES = [
+    ...PIPES_COMMON,
+];
 
-        description: "Common Operations",
-        entries: [
-            {
-                Component: ReverseStringPipe,
-
-                id: 'reverse-string',
-                name: "Reverse String",
-
-                category: 'common',
-                description: "Reverses a string.",
-
-                inputType: 'string',
-                outputType: 'string',
-            },
-        ],
-    },
-    {
-        id: 'hash',
-        name: "Hash",
-
-        description: "Hash Function",
-        entries: [],
-    },
-] as const satisfies PipeCatalogCategory[];
+export const PIPE_BY_ID = new Map(PIPES.map(pipe => [pipe.id, pipe]));
