@@ -1,0 +1,16 @@
+div.sp-bytes-view {
+    background-color: #FAFAFA;
+    border: solid 1px #666;
+
+    font-family: monospace;
+    font-size: .86em;
+    padding: .1em .2em;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25em;
+
+    & span {
+        user-select: all;
+    }
+}

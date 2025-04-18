@@ -1,0 +1,1 @@
+import { definePipe } from "../base";

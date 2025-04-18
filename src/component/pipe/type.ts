@@ -1,6 +1,6 @@
 import type { ComponentType } from "preact/compat";
 
-export type Bytes = { value: ArrayBuffer }; 
+export type Bytes = Uint8Array; 
 export type DataType = string | Bytes;
 export type AsDataTypeDefinition<T extends DataType|null> = T extends null ? "null" : T extends string ? "string" : "bytes";
 
