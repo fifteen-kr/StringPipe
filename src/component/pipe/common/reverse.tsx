@@ -5,7 +5,7 @@ function reverseString(input: string): Promise<string> {
     return Promise.resolve([...input].reverse().join(""));
 }
 
-export const ReverseStringPipe: PipeComponent<string, string> = (props) => {
+export const ReverseStringPipe: PipeComponent = (props) => {
     return <BasePipe
         title="Reverse String"
 

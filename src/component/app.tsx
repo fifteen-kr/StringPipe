@@ -1,4 +1,4 @@
-import { Pipeline } from "./pipeline";
+import { Pipeline } from "./pipe";
 
 export function App() {
     return <div className="sp-app">

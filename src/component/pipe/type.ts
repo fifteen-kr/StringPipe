@@ -1,10 +1,12 @@
 import type { FunctionComponent } from "preact/compat";
 
-import type { DataType } from "@/pipe";
+export type Bytes = Uint8Array;
+export type DataType = string | Bytes;
+export type AsDataTypeDefinition<T extends DataType|null> = T extends null ? "null" : T extends string ? "string" : "bytes";
 
-export interface PipeProps<InputType extends DataType, OutputType extends DataType> {
-    inputValue: InputType;
-    onOutputChange?: (output: OutputType) => void;
+export interface PipeProps {
+    inputValue?: DataType;
+    onOutputChange?: (value: DataType) => void;
 }
 
-export type PipeComponent<InputType extends DataType, OutputType extends DataType> = FunctionComponent<PipeProps<InputType, OutputType>>;
+export type PipeComponent = FunctionComponent<PipeProps>;

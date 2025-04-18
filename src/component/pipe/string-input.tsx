@@ -1,4 +1,5 @@
 import {BasePipe} from "./base";
+import { DataType } from "./type";
 
 export interface StringInputPipeProps {
     onOutputChange?: (output: string) => void;
@@ -12,7 +13,7 @@ export function StringInputPipe({onOutputChange}: StringInputPipeProps) {
         inputType="null"
         outputType="string"
 
-        onOutputChange={onOutputChange}
+        onOutputChange={onOutputChange as (output: DataType) => void}
     >
     </BasePipe>;
 }

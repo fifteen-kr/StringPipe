@@ -3,15 +3,15 @@ import "./pipeline.css";
 import { useCallback, useState } from "preact/hooks";
 
 import { uuidv4 } from "@/util";
-import type { DataType } from "@/pipe";
+import type { DataType, PipeComponent } from "./type";
 
-import { ReverseStringPipe, type PipeComponent } from "./pipe";
+import { ReverseStringPipe } from "./common";
 
-import { StringInputPipe } from "./pipe/string-input";
+import { StringInputPipe } from "./string-input";
 
 interface PipeState {
     id: string;
-    Component: PipeComponent<DataType, DataType>;
+    Component: PipeComponent;
     output: DataType;
 }
 
@@ -23,7 +23,7 @@ export function Pipeline() {
             output: "",
         }, {
             id: uuidv4(),
-            Component: ReverseStringPipe as PipeComponent<DataType, DataType>,
+            Component: ReverseStringPipe,
             output: "",
         }];
     });
@@ -47,5 +47,6 @@ export function Pipeline() {
                 onOutputChange={(output) => handleOutputChange(i, output)}
             />;
         }) }
+        <button>Add Pipe</button>
     </div>;
 }
