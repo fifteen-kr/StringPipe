@@ -51,6 +51,8 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
 
     const [override_input, setOverrideInput] = useState(false);
     const [output_value, setOutputValue] = useState<OutputType|null>(null);
+    const [last_error, setLastError] = useState<unknown|null>(null);
+
     const onOutputChangeRef = useRef(onOutputChange);
 
     useMemo(() => {
@@ -69,10 +71,11 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
 
                 pipe_value = await typeFixedPipeFunction(input_value as InputType);
             } catch(e) {
-                console.error(e);
+                setLastError(e);
                 return;
             }
 
+            setLastError(null);
             setOutputValue(pipe_value);
             
             onOutputChangeRef.current?.(pipe_value);
@@ -86,6 +89,7 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
         </div>
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
+        { last_error != null && <div className="sp-pipe-error">{ `${last_error}` }</div> }
         { typeof output_value === 'string' && <StringView value={output_value} /> }
         { output_value instanceof Uint8Array && <BytesView value={output_value} />  }
     </div>;

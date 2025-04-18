@@ -68,3 +68,11 @@ div.sp-pipe-header {
 div.sp-pipe-title {
     font-size: 1.2em;
 }
+
+div.sp-pipe-error {
+    background-color: #FEE;
+    border: solid 2px #FAA;
+
+    padding: .2em .4em;
+    color: #600;
+}

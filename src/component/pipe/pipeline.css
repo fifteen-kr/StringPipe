@@ -14,3 +14,23 @@ div.sp-pipeline {
         --sp-pipeline-top-radius: 0;
     }
 }
+
+div.sp-pipe-gap {
+    cursor: pointer;
+
+    font-size: 1.1em;
+    padding: .25em 0;
+
+    background-color: white;
+    text-align: center;
+
+    background-color: #DDF;
+
+    &:hover {
+        opacity: .7;
+    }
+
+    &:active {
+        opacity: .85;
+    }
+}
