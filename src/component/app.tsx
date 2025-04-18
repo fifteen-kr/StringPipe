@@ -1,3 +1,5 @@
+import "./app.css";
+
 import { Pipeline } from "./pipe";
 
 export function App() {

@@ -1,5 +1,47 @@
 div.sp-pipe {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    
+    &:first-child {
+        border-radius: .5em .5em 0 0;
+    }
+
     textarea {
         width: 100%;
     }
+
+    background: linear-gradient(var(--sp-pipe-input-color, initial), var(--sp-pipe-output-color, initial));
+
+    &.sp-pipe-input-string {
+        --sp-pipe-input-color: var(--sp-string-bg-color);
+    }
+
+    &.sp-pipe-output-string {
+        --sp-pipe-output-color: var(--sp-string-bg-color);
+    }
+
+    &.sp-pipe-input-bytes {
+        --sp-pipe-input-color: var(--sp-bytes-bg-color);
+    }
+
+    &.sp-pipe-output-bytes {
+        --sp-pipe-output-color: var(--sp-bytes-bg-color);
+    }
+
+    &.sp-pipe-input-null {
+        --sp-pipe-input-color: var(--sp-pipe-output-color);
+    }
+}
+
+div.sp-pipe-header {
+    display: flex;
+    flex-direction: row;
+
+    padding: .2em .4em;
+}
+
+div.sp-pipe-title {
+    font-size: 1.2em;
 }

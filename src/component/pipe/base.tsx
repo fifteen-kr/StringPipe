@@ -76,15 +76,17 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
         })();
     }, [pipeFunction, input_type, input_value]);
 
-    return <div className={classNames("sp-pipe", class_name)}>
-        { title && <div className="sp-pipe-title">{ title }</div> }
+    return <div className={classNames("sp-pipe", class_name, `sp-pipe-input-${input_type}`, `sp-pipe-output-${output_type}`)}>
+        <div className="sp-pipe-header">
+            { title && <div className="sp-pipe-title">{ title }</div> }
+        </div>
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
         { input_type != 'null' && output_value }
     </div>;
 }
 
-export function definePipe<InputType extends DataType, OutputType extends DataType, ParamsType extends Record<string, unknown>>(
+export function definePipe<InputType extends DataType|null, OutputType extends DataType, ParamsType extends Record<string, unknown>>(
     metadata: PipeMetadata<InputType, OutputType>,
     pipeFunction: (input: InputType, params: ParamsType) => Promise<OutputType>,
     default_params: ParamsType,

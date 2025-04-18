@@ -1,0 +1,8 @@
+:root {
+    --sp-string-bg-color: rgb(228, 186, 186);
+    --sp-bytes-bg-color: rgb(186, 228, 186);
+}
+
+body {
+    background-color: #FAFAFA;
+}

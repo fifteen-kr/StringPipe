@@ -3,14 +3,14 @@ import "./pipeline.css";
 import { useCallback, useState } from "preact/hooks";
 
 import { uuidv4 } from "@/util";
-import type { DataType, PipeComponentType } from "./type";
+import type { DataType, PipeDefinition } from "./type";
 
-import { StringInputPipe } from "./string-input";
 import { PIPE_BY_ID, PipeCatalog, PIPES } from "./catalog";
+import { StringInputPipe } from "./common";
 
 interface PipeState {
     id: string;
-    Component: PipeComponentType;
+    pipe_def: PipeDefinition;
     output: DataType|null;
 }
 
@@ -18,7 +18,7 @@ export function Pipeline() {
     const [pipes, setPipes] = useState<PipeState[]>(() => {
         return [{
             id: uuidv4(),
-            Component: StringInputPipe,
+            pipe_def: StringInputPipe,
             output: null,
         }];
     });
@@ -45,7 +45,7 @@ export function Pipeline() {
                 ...pipes,
                 {
                     id: uuidv4(),
-                    Component: pipe_def.Component,
+                    pipe_def,
                     output: null
                 },
             ]);
@@ -55,8 +55,8 @@ export function Pipeline() {
     }, [setSelectedCatalogPipe, selected_catalog_pipe]);
 
     return <div class="sp-pipeline">
-        { pipes.map(({id, Component}, i) => {
-            return <Component
+        { pipes.map(({id, pipe_def}, i) => {
+            return <pipe_def.Component
                 key={id}
                 inputValue={i === 0 ? null : pipes[i - 1].output}
                 onOutputChange={(output) => handleOutputChange(i, output)}
