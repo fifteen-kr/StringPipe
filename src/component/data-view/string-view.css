@@ -1,0 +1,11 @@
+div.sp-string-view {
+    background-color: #FAFAFA;
+    border: solid 1px #666;
+
+    font-family: monospace;
+    font-size: .9em;
+    padding: .15em .3em;
+    
+    white-space: pre-wrap;
+    line-height: 1.36em;
+}

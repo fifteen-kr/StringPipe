@@ -4,6 +4,7 @@ import type { ComponentType, ReactNode } from "preact/compat";
 import { useCallback, useMemo, useRef, useState } from "preact/hooks";
 
 import { TextArea } from "@/component/common/textarea";
+import { StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
 import type { DataType, AsDataTypeDefinition, PipeProps, PipeMetadata, PipeDefinition, PipeComponentType } from "./type";
@@ -82,7 +83,7 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
         </div>
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
-        { input_type != 'null' && output_value }
+        { typeof output_value === 'string' && <StringView value={output_value} /> }
     </div>;
 }
 
