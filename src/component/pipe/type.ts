@@ -25,3 +25,13 @@ export interface PipeMetadata<InputType extends DataType|null, OutputType extend
 export interface PipeDefinition<InputType extends DataType|null = DataType|null, OutputType extends DataType = DataType> extends PipeMetadata<InputType, OutputType> {
     Component: PipeComponentType;
 }
+
+export interface PipeCategoryMetadata {
+    id: string;
+    name?: string;
+    description?: string;
+}
+
+export interface PipeCategory extends PipeCategoryMetadata {
+    entries: PipeDefinition[];
+}

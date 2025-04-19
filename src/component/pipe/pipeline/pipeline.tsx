@@ -2,11 +2,10 @@ import "./pipeline.css";
 
 import { useCallback, useState } from "preact/hooks";
 
-import { classNames, uuidv4 } from "@/util";
-import type { AsDataTypeDefinition, DataType, PipeDefinition } from "../type";
+import { uuidv4 } from "@/util";
+import type { DataType, PipeDefinition } from "../type";
 
-import { PIPE_BY_ID, PipeCatalog, PIPES } from "../catalog";
-import { StringInputPipe } from "../common";
+import { StringInputPipe } from "../input";
 
 import {PipeGap} from "./gap";
 

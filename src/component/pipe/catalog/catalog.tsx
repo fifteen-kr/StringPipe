@@ -16,7 +16,6 @@ export function PipeCatalog(props: PipeCatalogProps) {
     } = props;
 
     return <div class="sp-pipe-catalog">
-        <p>Select Pipe to Add</p>
         { entries.map(entry => <PipeCatalogItem
             key={entry.id}
             entry={entry}

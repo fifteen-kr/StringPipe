@@ -39,7 +39,7 @@ div.sp-pipe-header {
     display: flex;
     flex-direction: row;
 
-    padding: .2em .4em;
+    padding: .3em .5em;
 
     & > button {
         cursor: pointer;

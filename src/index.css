@@ -1,6 +1,6 @@
 :root {
-    --sp-string-bg-color: rgb(228, 186, 186);
-    --sp-bytes-bg-color: rgb(186, 228, 186);
+    --sp-string-bg-color: oklab(95% 0.072 0.036);
+    --sp-bytes-bg-color: oklab(95% -0.072 -0.036);
 }
 
 body {

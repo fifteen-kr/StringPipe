@@ -31,7 +31,7 @@ export function PipeGap({ inputType, outputType, onClickAddPipe }: PipeGapProps)
     }, [onClickAddPipe]);
 
     return <div class={classNames("sp-pipe-gap", `sp-pipe-gap-${outputType ?? 'null'}`)}>
-        <button onClick={toggleShowCatalog}>{ show_catalog ? "Close" : "Add" }</button>
+        <button class="sp-pipe-gap-toggle-fold" onClick={toggleShowCatalog}>{ show_catalog ? "Fold" : "Insert Pipe" }</button>
         { show_catalog && <PipeCatalog entries={PIPES} onSelect={handleOnSelect} /> }
     </div>;
 }
