@@ -3,7 +3,7 @@ import "./pipeline.css";
 import { useCallback, useState } from "preact/hooks";
 
 import { uuidv4 } from "@/util";
-import type { AsDataTypeDefinition, DataType, PipeDefinition } from "../type";
+import type { DataType, DataTypeName, PipeDefinition } from "../type";
 
 import { StringInputPipe } from "../input";
 
@@ -16,7 +16,7 @@ interface PipeState {
     output: DataType|null;
 }
 
-function getConverter(from_type: AsDataTypeDefinition<DataType|null>, to_type: AsDataTypeDefinition<DataType|null>): PipeDefinition|null {
+function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefinition|null {
     switch(`${from_type}-${to_type}`) {
         case "string-bytes": {
             return PIPE_BY_ID.get("unicode-encode") ?? null;
@@ -57,12 +57,12 @@ export function Pipeline() {
             ];
 
             if(pipes[i].pipe_def.outputType !== pipe_def.inputType) {
-                const converter = getConverter(pipes[i].pipe_def.outputType, pipe_def.inputType);
+                const converter = getCastPipe(pipes[i].pipe_def.outputType, pipe_def.inputType);
                 if(converter) insert_pipes.unshift({ id: uuidv4(), pipe_def: converter, output: null });
             }
 
             if(i+1 < pipes.length && pipes[i+1].pipe_def.inputType !== pipe_def.outputType) {
-                const converter = getConverter(pipe_def.outputType, pipes[i+1].pipe_def.inputType);
+                const converter = getCastPipe(pipe_def.outputType, pipes[i+1].pipe_def.inputType);
                 if(converter) insert_pipes.push({ id: uuidv4(), pipe_def: converter, output: null });
             }
 

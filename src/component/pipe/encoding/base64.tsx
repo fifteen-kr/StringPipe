@@ -97,7 +97,7 @@ function base64Decode(input: string): Bytes {
     return output;
 }
 
-export const Base64EncodePipe = definePipe<Bytes, string, {}>(
+export const Base64EncodePipe = definePipe(
     {
         id: 'base64-encode',
         name: 'Base64 Encode',
@@ -112,7 +112,7 @@ export const Base64EncodePipe = definePipe<Bytes, string, {}>(
     {},
 );
 
-export const Base64DecodePipe = definePipe<string, Bytes, {}>(
+export const Base64DecodePipe = definePipe(
     {
         id: 'base64-decode',
         name: 'Base64 Decode',

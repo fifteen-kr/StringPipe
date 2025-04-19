@@ -4,12 +4,12 @@ import { useCallback, useState } from "preact/hooks";
 
 import { classNames } from "@/util";
 
-import type { DataType, AsDataTypeDefinition, PipeDefinition } from "../type";
+import type { DataType, DataTypeName, PipeDefinition } from "../type";
 import { PIPE_BY_ID, PIPE_CATEGORIES, PipeCatalog } from "../catalog";
 
 interface PipeGapProps {
-    inputType?: AsDataTypeDefinition<DataType|null>;
-    outputType?: AsDataTypeDefinition<DataType|null>;
+    inputType?: DataTypeName;
+    outputType?: DataTypeName;
 
     defaultShowCatalog?: boolean;
 

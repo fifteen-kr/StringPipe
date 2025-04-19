@@ -1,7 +1,7 @@
 import { definePipe } from "../base";
 import { Bytes } from "../type";
 
-export const ShowStringPipe = definePipe<string, string, {}>(
+export const ShowStringPipe = definePipe(
     {
         id: "id-string",
         name: "Show String",
@@ -14,7 +14,7 @@ export const ShowStringPipe = definePipe<string, string, {}>(
     {},
 );
 
-export const ShowBytesPipe = definePipe<Bytes, Bytes, {}>(
+export const ShowBytesPipe = definePipe(
     {
         id: "id-bytes",
         name: "Show Bytes",

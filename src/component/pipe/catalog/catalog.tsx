@@ -1,7 +1,7 @@
 import "./catalog.css";
 
 import { classNames } from "@/util";
-import type { DataType, PipeMetadata, PipeCategory } from "../type";
+import type { DataType, PipeMetadata, PipeCategory, DataTypeName } from "../type";
 
 export interface PipeCatalogProps {
     categories: PipeCategory[];
@@ -36,13 +36,13 @@ export function PipeCatalogCategory({category, onSelect}: PipeCatalogCategoryPro
     </div>
 }
 
-export interface PipeCatalogItemProps<InputType extends DataType|null, OutputType extends DataType> {
-    entry: PipeMetadata<InputType, OutputType>;
+export interface PipeCatalogItemProps<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName> {
+    entry: PipeMetadata<InputTypeName, OutputTypeName>;
 
     onClick?: () => void;
 }
 
-export function PipeCatalogItem({entry, onClick}: PipeCatalogItemProps<DataType|null, DataType>) {
+export function PipeCatalogItem({entry, onClick}: PipeCatalogItemProps<DataTypeName, DataTypeName>) {
     return <div class={classNames("sp-pipe-catalog-item")} onClick={onClick}>
         {entry.name ?? entry.id}
     </div>

@@ -1,7 +1,6 @@
-import { BasePipe, definePipe } from "../base";
-import { PipeDefinition } from "../type";
+import { definePipe } from "../base";
 
-export const StringInputPipe = definePipe<null, string, {}>(
+export const StringInputPipe = definePipe(
     {
         id: "input-string",
         name: "String Input",

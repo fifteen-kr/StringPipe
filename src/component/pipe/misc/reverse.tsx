@@ -1,6 +1,6 @@
 import { definePipe } from "../base";
 
-export const ReverseStringPipe = definePipe<string, string, {}>(
+export const ReverseStringPipe = definePipe(
     {
         id: "reverse-string",
         name: "Reverse String",

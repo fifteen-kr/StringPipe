@@ -1,6 +1,6 @@
 import { definePipe } from "../base";
 
-export const TrimStringPipe = definePipe<string, string, {}>(
+export const TrimStringPipe = definePipe(
     {
         id: "trim-string",
         name: "Trim String",

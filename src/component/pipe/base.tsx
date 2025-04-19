@@ -7,14 +7,14 @@ import { TextArea } from "@/component/common/textarea";
 import { BytesView, StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
-import type { DataType, AsDataTypeDefinition, PipeProps, PipeMetadata, PipeDefinition, PipeComponentType } from "./type";
+import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams } from "./type";
 
-export type BasePipeProps<InputType extends DataType|null, OutputType extends DataType>
+export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>
     = PipeProps & {
-    inputType: AsDataTypeDefinition<InputType>;
-    outputType: AsDataTypeDefinition<OutputType>;
+    inputType: InputTypeName;
+    outputType: OutputTypeName;
 
-    pipeFunction?: (input: InputType) => Promise<OutputType>;
+    pipeFunction?: PipeFunction<InputTypeName, OutputTypeName>;
 
     className?: string;
 
@@ -22,8 +22,9 @@ export type BasePipeProps<InputType extends DataType|null, OutputType extends Da
     children?: ReactNode;
 };
 
-function validateValue<D extends DataType|null>(data_type: AsDataTypeDefinition<D>, value: unknown): value is D {
+function validateValue<D extends DataTypeName>(data_type: D, value: unknown): value is ToDataType<D> {
     switch(data_type) {
+        case "all": return typeof value === "string" || value instanceof Uint8Array;
         case "string": return typeof value === "string";
         case "bytes": return value instanceof Uint8Array;
         case "null": return value == null;
@@ -31,7 +32,7 @@ function validateValue<D extends DataType|null>(data_type: AsDataTypeDefinition<
     }
 }
 
-export function BasePipe<InputType extends DataType|null, OutputType extends DataType>(props: BasePipeProps<InputType, OutputType>) {
+export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>(props: BasePipeProps<InputTypeName, OutputTypeName>) {
     const {
         pipeFunction,
         onOutputChange,
@@ -50,7 +51,7 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
     } = props;
 
     const [override_input, setOverrideInput] = useState(false);
-    const [output_value, setOutputValue] = useState<OutputType|null>(null);
+    const [output_value, setOutputValue] = useState<ToDataType<OutputTypeName>|null>(null);
     const [last_error, setLastError] = useState<unknown|null>(null);
 
     const onOutputChangeRef = useRef(onOutputChange);
@@ -59,17 +60,18 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
         if(input_value == null) return;
         if(!pipeFunction) return;
 
-        const typeFixedPipeFunction = pipeFunction as (input: InputType) => Promise<OutputType>;
-
         (async () => {
-            let pipe_value: OutputType;
+            let pipe_value: ToDataType<OutputTypeName>;
 
             try {
                 if(!validateValue(input_type, input_value)) {
                     throw new Error(`Invalid input value type '${typeof input_value}' for input type '${input_type}'.`);
                 }
 
-                pipe_value = await typeFixedPipeFunction(input_value as InputType);
+                pipe_value = await pipeFunction(input_value);
+                if(pipe_value == null) {
+                    throw new Error(`The function returned null.`);
+                }
             } catch(e) {
                 setLastError(e);
                 return;
@@ -95,12 +97,12 @@ export function BasePipe<InputType extends DataType|null, OutputType extends Dat
     </div>;
 }
 
-export function definePipe<InputType extends DataType|null, OutputType extends DataType, ParamsType extends Record<string, unknown>>(
-    metadata: PipeMetadata<InputType, OutputType>,
-    pipeFunction: (input: InputType, params: ParamsType) => Promise<OutputType>,
+export function definePipe<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object>(
+    metadata: PipeMetadata<InputTypeName, OutputTypeName>,
+    pipeFunction: PipeFunctionWithParams<InputTypeName, OutputTypeName, ParamsType>,
     default_params: ParamsType,
     ParamsComponent?: ComponentType<{params: ParamsType, onChangeParams: (params: Partial<ParamsType>) => void}>,
-): PipeDefinition<InputType, OutputType> {
+): PipeDefinition<InputTypeName, OutputTypeName> {
     return {
         ...metadata,
         Component: (props: PipeProps) => {
@@ -110,11 +112,11 @@ export function definePipe<InputType extends DataType|null, OutputType extends D
                 setParams((params) => ({...params, ...new_params}));
             }, [setParams]);
 
-            const callPipeFunction = useCallback(async (input: InputType): Promise<OutputType>  => {
+            const callPipeFunction = useCallback(async (input: ToDataType<InputTypeName>): Promise<ToDataType<OutputTypeName>>  => {
                 return await pipeFunction(input, params);
             }, [params]);
             
-            return <BasePipe<InputType, OutputType>
+            return <BasePipe<InputTypeName, OutputTypeName>
                 title={metadata.name ?? metadata.id}
 
                 inputType={metadata.inputType}

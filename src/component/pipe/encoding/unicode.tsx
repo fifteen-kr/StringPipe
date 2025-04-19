@@ -1,7 +1,7 @@
 import type { Bytes } from "../type";
 import { definePipe } from "../base";
 
-export const UnicodeEncodePipe = definePipe<string, Bytes, {encoding: string}>(
+export const UnicodeEncodePipe = definePipe(
     {
         id: "unicode-encode",
         name: "Unicode Encode",
@@ -17,7 +17,7 @@ export const UnicodeEncodePipe = definePipe<string, Bytes, {encoding: string}>(
     {encoding: "utf-8"},
 );
 
-export const UnicodeDecodePipe = definePipe<Bytes, string, {encoding: string}>(
+export const UnicodeDecodePipe = definePipe(
     {
         id: "unicode-decode",
         name: "Unicode Decode",

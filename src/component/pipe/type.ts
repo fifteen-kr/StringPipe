@@ -1,8 +1,11 @@
 import type { ComponentType } from "preact/compat";
 
-export type Bytes = Uint8Array; 
+export type Bytes = Uint8Array;
 export type DataType = string | Bytes;
-export type AsDataTypeDefinition<T extends DataType|null> = T extends null ? "null" : T extends string ? "string" : "bytes";
+export type DataTypeName = "string" | "bytes" | "all" | "null";
+export type ToDataType<T extends DataTypeName> = T extends "string" ? string : T extends "bytes" ? Bytes : T extends "all" ? DataType : null;
+export type PipeFunction<InputTypeName extends DataTypeName = DataTypeName, OutputTypeName extends DataTypeName = DataTypeName> = (input: ToDataType<InputTypeName>) => Promise<ToDataType<OutputTypeName>>;
+export type PipeFunctionWithParams<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object> = (input: ToDataType<InputTypeName>, params: ParamsType) => Promise<ToDataType<OutputTypeName>>;
 
 export interface PipeProps {
     inputValue?: DataType|null;
@@ -13,16 +16,16 @@ export interface PipeProps {
 
 export type PipeComponentType = ComponentType<PipeProps>;
 
-export interface PipeMetadata<InputType extends DataType|null, OutputType extends DataType> {
+export interface PipeMetadata<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName> {
     id: string;
     name?: string;
     description?: string;
 
-    inputType: AsDataTypeDefinition<InputType>;
-    outputType: AsDataTypeDefinition<OutputType>;
+    inputType: InputTypeName;
+    outputType: OutputTypeName;
 }
 
-export interface PipeDefinition<InputType extends DataType|null = DataType|null, OutputType extends DataType = DataType> extends PipeMetadata<InputType, OutputType> {
+export interface PipeDefinition<InputTypeName extends DataTypeName = DataTypeName, OutputTypeName extends DataTypeName = DataTypeName> extends PipeMetadata<InputTypeName, DataTypeName> {
     Component: PipeComponentType;
 }
 
