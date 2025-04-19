@@ -1,4 +1,5 @@
 import type { PipeCategory } from "../type";
+import { Base64DecodePipe, Base64EncodePipe } from "./base64";
 import { UnicodeDecodePipe, UnicodeEncodePipe } from "./unicode";
 
 export * from "./base64";
@@ -12,5 +13,7 @@ export const PIPES_ENCODING: PipeCategory = {
     entries: [
         UnicodeEncodePipe,
         UnicodeDecodePipe,
+        Base64EncodePipe,
+        Base64DecodePipe,
     ],
 };

@@ -8,4 +8,6 @@ div.sp-string-view {
     
     white-space: pre-wrap;
     line-height: 1.36em;
+
+    overflow-x: auto;
 }
