@@ -1,16 +1,11 @@
-div.sp-pipe-catalog {
-    background-color: #FFC;
-}
-
 div.sp-pipe-catalog-item {
     cursor: pointer;
 
     &:hover {
-        background-color: #FF0;
+        background-color: #FFE;
     }
 
-    &.sp-selected {
-        font-weight: bold;
-        background-color: #FF0;
+    &:active {
+        background-color: #FFA;
     }
 }

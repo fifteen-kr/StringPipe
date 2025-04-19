@@ -6,14 +6,12 @@ import type { DataType, PipeMetadata } from "../type";
 export interface PipeCatalogProps {
     entries: PipeMetadata<DataType|null, DataType>[];
 
-    selectedEntryId?: string|null;
     onSelect?: (id: string) => void;
 }
 
 export function PipeCatalog(props: PipeCatalogProps) {
     const {
         entries,
-        selectedEntryId: selected_entry_id,
         onSelect,
     } = props;
 
@@ -22,7 +20,6 @@ export function PipeCatalog(props: PipeCatalogProps) {
         { entries.map(entry => <PipeCatalogItem
             key={entry.id}
             entry={entry}
-            selected={entry.id === selected_entry_id}
             onClick={() => onSelect?.(entry.id)}
         />) }
     </div>;
@@ -30,13 +27,12 @@ export function PipeCatalog(props: PipeCatalogProps) {
 
 export interface PipeCatalogItemProps<InputType extends DataType|null, OutputType extends DataType> {
     entry: PipeMetadata<InputType, OutputType>;
-    selected?: boolean;
 
     onClick?: () => void;
 }
 
-export function PipeCatalogItem({entry, selected, onClick}: PipeCatalogItemProps<DataType|null, DataType>) {
-    return <div class={classNames("sp-pipe-catalog-item", selected && "sp-selected")} onClick={onClick}>
+export function PipeCatalogItem({entry, onClick}: PipeCatalogItemProps<DataType|null, DataType>) {
+    return <div class={classNames("sp-pipe-catalog-item")} onClick={onClick}>
         {entry.name ?? entry.id}
     </div>
 }

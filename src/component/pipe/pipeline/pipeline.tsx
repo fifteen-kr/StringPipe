@@ -3,10 +3,12 @@ import "./pipeline.css";
 import { useCallback, useState } from "preact/hooks";
 
 import { classNames, uuidv4 } from "@/util";
-import type { AsDataTypeDefinition, DataType, PipeDefinition } from "./type";
+import type { AsDataTypeDefinition, DataType, PipeDefinition } from "../type";
 
-import { PIPE_BY_ID, PipeCatalog, PIPES } from "./catalog";
-import { StringInputPipe } from "./common";
+import { PIPE_BY_ID, PipeCatalog, PIPES } from "../catalog";
+import { StringInputPipe } from "../common";
+
+import {PipeGap} from "./gap";
 
 interface PipeState {
     id: string;
@@ -33,28 +35,7 @@ export function Pipeline() {
         }));
     }, []);
 
-    const [selected_catalog_pipe, setSelectedCatalogPipe] = useState<string | null>(null);
-
-    const handleOnClickAddPipe = useCallback(() => {
-        if(selected_catalog_pipe == null) return;
-
-        const pipe_def = PIPE_BY_ID.get(selected_catalog_pipe);
-        if(!pipe_def) return;
-        
-        setPipes((pipes) => [
-            ...pipes,
-            { id: uuidv4(), pipe_def, output: null },
-        ]);
-
-        setSelectedCatalogPipe(null);
-    }, [selected_catalog_pipe]);
-
-    const handleOnClickAddPipeAfter = useCallback((pipe_id: string) => {
-        if(selected_catalog_pipe == null) return;
-
-        const pipe_def = PIPE_BY_ID.get(selected_catalog_pipe);
-        if(!pipe_def) return;
-
+    const handleOnClickAddPipeAfter = useCallback((pipe_id: string, pipe_def: PipeDefinition) => {
         setPipes((pipes) => {
             const i = pipes.findIndex(({id}) => id === pipe_id);
             if(i === -1) return pipes;
@@ -65,9 +46,7 @@ export function Pipeline() {
                 ...pipes.slice(i + 1),
             ];
         });
-
-        setSelectedCatalogPipe(null);
-    }, [selected_catalog_pipe]);
+    }, []);
 
     const handleOnClickRemovePipe = useCallback((pipe_id: string) => {
         setPipes((pipes) => pipes.filter(({id}) => id !== pipe_id));
@@ -80,20 +59,10 @@ export function Pipeline() {
                     key={id}
                     inputValue={pipe_def.inputType === 'null' ? null : pipes[i - 1].output}
                     onOutputChange={(output) => handleOutputChange(id, output)}
-                    onClickRemove={() => handleOnClickRemovePipe(id)}
+                    onClickRemove={i > 0 ? () => handleOnClickRemovePipe(id) : (void 0)}
                 />
-                <PipeGap dataType={pipe_def.outputType} onClickAddPipe={() => handleOnClickAddPipeAfter(id)} />
+                <PipeGap inputType={pipe_def.inputType} outputType={pipe_def.outputType} onClickAddPipe={(catalog_def) => handleOnClickAddPipeAfter(id, catalog_def)} />
             </>;
         }) }
-        <PipeCatalog entries={PIPES} selectedEntryId={selected_catalog_pipe} onSelect={setSelectedCatalogPipe} />
     </div>;
-}
-
-interface PipeGapProps {
-    dataType?: AsDataTypeDefinition<DataType|null>;
-    onClickAddPipe?: () => void;
-}
-
-function PipeGap({dataType, onClickAddPipe}: PipeGapProps) {
-    return <div class={classNames("sp-pipe-gap", `sp-pipe-gap-${dataType ?? "null"}`)} onClick={onClickAddPipe}>Insert New Pipe</div>;
 }

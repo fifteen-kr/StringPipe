@@ -3,7 +3,7 @@ div.sp-bytes-view {
     border: solid 1px #666;
 
     font-family: monospace;
-    font-size: .86em;
+    font-size: 1em;
     padding: .1em .2em;
 
     display: flex;
