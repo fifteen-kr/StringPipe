@@ -9,7 +9,7 @@ export * from "./show";
 
 export const PIPES_MISC: PipeCategory = {
     id: 'misc',
-    name: 'Misccellaneous',
+    name: 'Miscellaneous',
     description: "Miscellaneous string and bytes manipulation.",
 
     entries: [
