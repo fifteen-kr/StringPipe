@@ -5,7 +5,7 @@ import { useCallback, useState } from "preact/hooks";
 import { classNames } from "@/util";
 
 import type { DataType, AsDataTypeDefinition, PipeDefinition } from "../type";
-import { PIPE_BY_ID, PipeCatalog, PIPES } from "../catalog";
+import { PIPE_BY_ID, PIPE_CATEGORIES, PipeCatalog } from "../catalog";
 
 interface PipeGapProps {
     inputType?: AsDataTypeDefinition<DataType|null>;
@@ -31,7 +31,7 @@ export function PipeGap({ inputType, outputType, onClickAddPipe }: PipeGapProps)
     }, [onClickAddPipe]);
 
     return <div class={classNames("sp-pipe-gap", `sp-pipe-gap-${outputType ?? 'null'}`)}>
-        <button class="sp-pipe-gap-toggle-fold" onClick={toggleShowCatalog}>{ show_catalog ? "Fold" : "Insert Pipe" }</button>
-        { show_catalog && <PipeCatalog entries={PIPES} onSelect={handleOnSelect} /> }
+        <button class="sp-pipe-gap-toggle-fold" onClick={toggleShowCatalog}>{ show_catalog ? "Hide" : "Insert Pipe" }</button>
+        { show_catalog && <PipeCatalog categories={PIPE_CATEGORIES} onSelect={handleOnSelect} /> }
     </div>;
 }
