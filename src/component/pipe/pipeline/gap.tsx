@@ -11,11 +11,13 @@ interface PipeGapProps {
     inputType?: AsDataTypeDefinition<DataType|null>;
     outputType?: AsDataTypeDefinition<DataType|null>;
 
+    defaultShowCatalog?: boolean;
+
     onClickAddPipe?: (pipe_def: PipeDefinition) => void;
 }
 
-export function PipeGap({ inputType, outputType, onClickAddPipe }: PipeGapProps) {
-    const [show_catalog, setShowCatalog] = useState(true);
+export function PipeGap({ inputType, outputType, defaultShowCatalog: default_show_catalog, onClickAddPipe }: PipeGapProps) {
+    const [show_catalog, setShowCatalog] = useState(default_show_catalog ?? false);
 
     const toggleShowCatalog = useCallback(() => {
         setShowCatalog((show_catalog) => !show_catalog);
