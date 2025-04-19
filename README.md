@@ -1,37 +1,37 @@
 # StringPipe
 
-StringPipe is a simple single-page web application for manipulating strings and bytes, with emphasis on explicit type management.
+[Try StringPipe on s.0xF.kr!](https://s.0xF.kr/)
 
-## Philosophy
+StringPipe is a simple single-page web application for manipulating strings and bytes.
 
-There are many tools available online for manipulating strings and bytes, such as hashing, encoding, and decoding. However, they are often not designed with explicit type management in mind.
+There is no need to install anything to use StringPipe, and all the data is processed locally. Just open the link above and start using it!
 
-This may cause inconsistencies. For example, SHA-256 hashes of a string may differ depending on the tool used, because they may use different encodings. The problem worsens when composition is involved. For example, the result of `base64(sha256("hello"))` may differ depending on whether the hash is uppercase or lowercase.
+## Features (PLANNED)
 
-The fundamental reason for the inconsistencies is that SHA-256 (and many other hash/key derivation functions) *not* being a function mapping strings to strings; it maps bytes (of variable length) to bytes (of fixed length). There are implicit conversions between strings and bytes, which are configurable and need to be made explicit.
+- Hash functions (MD5, SHA-1, SHA-256, SHA-512, ...)
+- Encoding/decoding (Base64, URI, ...)
+- Unicode conversion (UTF-8, UTF-16, ...)
+- Codes for esolangs (BrainF***, Aheui, ...)
 
-StringPipe is designed to make those conversions explicit, and to provide a consistent and reliable way to manipulate strings and bytes.
+### Type Safety
 
-## Types
+So, what makes StringPipe different from other tools?
+A key feature of StringPipe is that it's designed with explicit type management in mind.
 
-### String
+For example, SHA-256 is a function that maps bytes (of variable length) to bytes (of fixed length). StringPipe makes this explicit, and requires you to specify the encoding of the input string before hashing it.
 
-A string is a sequence of nonnegative integers ranging between 0 and 0x10FFFF, or in other words, a sequence of [Unicode code points](https://www.unicode.org/glossary/#code_point), often referred as "runes".
+Most other tools do not make this explicit, and may use different encodings depending on the tool used. This can lead to inconsistencies, especially when composition is involved. For example, the result of `base64(sha256("안녕!"))` may differ depending on:
 
-In StringPipe, string I/O may happen in a few ways:
+- The encoding used for the input string ("안녕!") before hashing it. (UTF-8, UTF-16, CP949, ...)
+- Whether the hash is uppercase or lowercase. (abcdef vs. ABCDEF)
+
+### Various Data Source (PLANNED)
+
+StringPipe supports multiple ways to input strings and bytes:
 
 - Textbox (the most natural, but often inaccurate way).
+- Contents from a file. (StringPipe never uploads your file to any server - it's all done locally in your browser.)
+- Contents from the clipboard.
 - List of decimal, binary, or hexadecimal representations of integers.
-- A string literal.
 
-### Bytes
-
-Bytes consist of nonnegative integers ranging between 0 and 255.
-
-In StringPipe, byte I/O may happen in a few ways:
-
-- With HexView
-- List of decimal, binary, or hexadecimal representations of integers
-- Python, C or BrainF**k representation of bytes
-
-By default, conversion between strings and bytes is done using UTF-8.
+Be aware that, currently StringPipe is not intended to be used for large files.
