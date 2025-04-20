@@ -25,7 +25,7 @@ export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName ext
     outputType: OutputTypeName;
 
     pipeFunction?: PipeFunction<InputTypeName, OutputTypeName>;
-    outputView?: ComponentType<{value: ToDataType<OutputTypeName>}>;
+    outputView?: ComponentType<{value: ToDataType<OutputTypeName>}>|null;
 
     className?: string;
 
