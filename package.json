@@ -1,6 +1,6 @@
 {
   "name": "@123jimin/string-pipe-app",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple single-page web application for manipulating strings and bytes, with emphasis on explicit type management.",
   "main": "index.js",
   "scripts": {
