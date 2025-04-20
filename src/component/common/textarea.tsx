@@ -13,5 +13,5 @@ export function TextArea(props: TextAreaProps) {
         onChange?.((e.currentTarget as HTMLTextAreaElement).value);
     }, [onChange]);
 
-    return <textarea onInput={handleOnChange} rows={4} />;
+    return <textarea aria-label="Input" onInput={handleOnChange} rows={4} />;
 }
