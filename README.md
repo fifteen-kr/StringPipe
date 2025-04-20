@@ -1,37 +1,65 @@
 # StringPipe
 
+![Build Status](https://github.com/fifteen-kr/StringPipe/actions/workflows/build.yaml/badge.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+
 [Try StringPipe on s.0xF.kr!](https://s.0xF.kr/)
 
-StringPipe is a simple single-page web application for manipulating strings and bytes.
+**StringPipe** is a zero-install, web-based playground for converting, analyzing, and hashing texts and bytes.
 
-There is no need to install anything to use StringPipe, and all the data is processed locally. Just open the link above and start using it!
+For example, you can compose a pipeline like `Input → UTF-8 → SHA-256 → Base64` and use it to hash a string.
 
-## Features (PLANNED)
+(Note: StringPipe is still in development. Some features (such as hash functions) may not have been implemented yet.)
 
-- Hash functions (MD5, SHA-1, SHA-256, SHA-512, ...)
-- Encoding/decoding (Base64, URI, ...)
-- Unicode conversion (UTF-8, UTF-16, ...)
-- Codes for esolangs (BrainF***, Aheui, ...)
+## Features
 
-### Type Safety
+- Mobile-friendly UI
+- Runs locally in your browser (no server-side computation)
+- Explicit type management (avoids inconsistencies cause by implicit encoding/decoding)
 
-So, what makes StringPipe different from other tools?
-A key feature of StringPipe is that it's designed with explicit type management in mind.
+### Pipes
 
-For example, SHA-256 is a function that maps bytes (of variable length) to bytes (of fixed length). StringPipe makes this explicit, and requires you to specify the encoding of the input string before hashing it.
+- Miscellaneous
+  - Word/Line Count
+- Encoding
+  - UTF-8
+  - Base64
+- Literal
+  - Integer List
+  - Python String Literal
+- Cipher
+  - ROT (including ROT13)
 
-Most other tools do not make this explicit, and may use different encodings depending on the tool used. This can lead to inconsistencies, especially when composition is involved. For example, the result of `base64(sha256("안녕!"))` may differ depending on:
+## Planned Features
 
-- The encoding used for the input string ("안녕!") before hashing it. (UTF-8, UTF-16, CP949, ...)
-- Whether the hash is uppercase or lowercase. (abcdef vs. ABCDEF)
+### Pipes
 
-### Various Data Source (PLANNED)
+- Miscellaneous
+  - n-gram Frequency Analysis
+  - Unicode Lookup (code point, name, ...)
+  - Unicode Normalization
+  - Regex Search/Replace
+- Encoding
+  - Unicode Encodings (UTF-16, UTF-32, ...)
+  - Various Text Encodings (EUC-KR, Shift-JIS, ...)
+  - URI Encodings (URI, URI Component)
+  - Punycode
+- Hash
+  - MD5, SHA-1, SHA-256, SHA-512, ...
+- Literal
+  - HTML Entity
+  - Esoteric Languages (BrainF***, Aheui, ...)
+- Cipher
+  - Classic Ciphers (Caesar, Vigenère, ...)
+  - Modern Ciphers (AES, ...)
 
-StringPipe supports multiple ways to input strings and bytes:
+### Various Data Source
+
+StringPipe will support multiple ways to input strings and bytes:
 
 - Textbox (the most natural, but often inaccurate way).
 - Contents from a file. (StringPipe never uploads your file to any server - it's all done locally in your browser.)
 - Contents from the clipboard.
 - List of decimal, binary, or hexadecimal representations of integers.
 
-Be aware that, currently StringPipe is not intended to be used for large files.
+Be aware that StringPipe will not be intended to be used for large files.
