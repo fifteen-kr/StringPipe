@@ -5,17 +5,11 @@ import { useCallback, useState } from "preact/hooks";
 import { uuidv4 } from "@/util";
 import type { DataType, DataTypeName, PipeDefinition } from "../type";
 
-import { StringInputPipe } from "../input";
-
 import { PipeGap } from "./gap";
 import { PIPE_BY_ID } from "../catalog";
 import { getDataTypeName } from "../data";
 
-interface PipeState {
-    id: string;
-    pipe_def: PipeDefinition;
-    output: DataType|null;
-}
+import { createDefaultPipeStates, type PipeState } from "./state";
 
 function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefinition|null {
     if(to_type === 'all') return null;
@@ -32,13 +26,7 @@ function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefini
 }
 
 export function Pipeline() {
-    const [pipes, setPipes] = useState<PipeState[]>(() => {
-        return [{
-            id: uuidv4(),
-            pipe_def: StringInputPipe,
-            output: "",
-        }];
-    });
+    const [pipes, setPipes] = useState<PipeState[]>(() => createDefaultPipeStates());
 
     const handleOutputChange = useCallback((pipe_id: string, output: DataType) => {
         setPipes((pipes) => pipes.map((pipe) => {

@@ -48,3 +48,9 @@ div.sp-pipe-catalog-item {
         width: 33.33%;
     }
 }
+
+@media (min-width: 1600px) {
+    div.sp-pipe-catalog-category {
+        width: 25%;
+    }
+}

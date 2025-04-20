@@ -1,5 +1,5 @@
 div.sp-bytes-view {
-    background-color: #FAFAFA;
+    background-color: var(--bg-color);
     border: solid 1px #666;
 
     font-family: monospace;

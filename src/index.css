@@ -1,8 +1,9 @@
 :root {
     --sp-string-bg-color: oklab(95% 0.072 0.036);
     --sp-bytes-bg-color: oklab(95% -0.072 -0.036);
+    --bg-color: #FCFCFC;
 }
 
 body {
-    background-color: #FAFAFA;
+    background-color: var(--bg-color);
 }

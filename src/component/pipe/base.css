@@ -4,15 +4,14 @@ div.sp-pipe {
 
     width: 100%;
     
-    &:first-child {
-        border-radius: var(--sp-pipeline-top-radius, 0) var(--sp-pipeline-top-radius, 0) 0 0;
-    }
+    border-radius: var(--sp-pipeline-top-radius, 0) var(--sp-pipeline-top-radius, 0) 0 0;
 
     textarea {
         width: 100%;
     }
 
     background: linear-gradient(var(--sp-pipe-input-color, initial), var(--sp-pipe-output-color, initial));
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.12);
 
     &.sp-pipe-input-string {
         --sp-pipe-input-color: var(--sp-string-bg-color);
@@ -39,7 +38,7 @@ div.sp-pipe-header {
     display: flex;
     flex-direction: row;
 
-    padding: .3em .5em;
+    padding: .35em .7em;
 
     & > button {
         cursor: pointer;
@@ -71,6 +70,7 @@ div.sp-pipe-title {
 }
 
 div.sp-pipe-params {
+    box-shadow: inset 0 0 10px -2px rgba(0, 0, 0, .25);
     padding: .4em .8em;
 }
 
