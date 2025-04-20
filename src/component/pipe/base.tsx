@@ -98,7 +98,7 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
         { last_error != null && <div className="sp-pipe-error">{ `${last_error}` }</div> }
-        { output_value != null && <OutputView value={output_value} /> }
+        { output_value != null && OutputView != null && <OutputView value={output_value} /> }
     </div>;
 }
 
