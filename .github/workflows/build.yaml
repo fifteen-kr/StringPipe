@@ -35,7 +35,7 @@ jobs:
     - name: Run Type Check
       run: pnpm tsc
     - name: Run Build
-      run: pnpm build --mode=prod --sourcemap=false
+      run: pnpm build --mode=prod
     - name: Postprocess Files 
       run: |
         rm -rf ./serve/debug
