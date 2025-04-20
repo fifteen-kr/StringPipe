@@ -10,8 +10,9 @@ import { classNames } from "@/util";
 import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, DataType } from "./type";
 import { getDataTypeName, validateValue } from "./data";
 
-
-type DisplayComponentProps<D extends DataTypeName> = { value: ToDataType<D> };
+interface DisplayComponentProps<D extends DataTypeName> {
+    value: ToDataType<D>;
+}
 
 function DefaultDisplayComponent<D extends DataTypeName>({value}: DisplayComponentProps<D>) {
     if(typeof value === "string") return <StringView value={value} />;
@@ -108,7 +109,7 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
  * @param pipeFunction The function that performs the pipe's operation.
  * @param default_params Default parameters for the pipe.
  * @param ParamsComponent Component for displaying and editing the pipe's parameters.
- * @param DisplayComponent Component for displaying the pipe's output. If not provided, a default component will be used.
+ * @param outputViewFactory Component for displaying the pipe's output. If not provided, a default component will be used.
  * @returns 
  */
 export function definePipe<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object>(
@@ -116,7 +117,7 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
     pipeFunction: PipeFunctionWithParams<InputTypeName, OutputTypeName, ParamsType>,
     default_params: ParamsType,
     ParamsComponent?: ComponentType<{params: ParamsType, onChangeParams: (params: Partial<ParamsType>) => void}>|null,
-    DisplayComponent?: ComponentType<DisplayComponentProps<OutputTypeName>>|null,
+    outputViewFactory?: ((params: ParamsType) => ComponentType<DisplayComponentProps<OutputTypeName>>)|null,
 ): PipeDefinition<InputTypeName, OutputTypeName> {
     return {
         ...metadata,
@@ -130,6 +131,8 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
             const callPipeFunction = useCallback(async (input: ToDataType<InputTypeName>): Promise<ToDataType<OutputTypeName>>  => {
                 return await pipeFunction(input, params);
             }, [params]);
+
+            const outputView = useMemo(() => outputViewFactory ? outputViewFactory(params) : (void 0), [outputViewFactory, params]);
             
             return <BasePipe<InputTypeName, OutputTypeName>
                 title={metadata.name ?? metadata.id}
@@ -138,7 +141,7 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
                 outputType={metadata.outputType}
 
                 pipeFunction={callPipeFunction}
-                outputView={DisplayComponent}
+                outputView={outputView}
 
                 {...props}
             >

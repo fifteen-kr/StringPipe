@@ -1,11 +1,13 @@
 import type { PipeCategory } from "../type";
-import { ReversePipe } from "./reverse";
 import { DisplayPipe } from "./display";
+import { WcPipe } from "./wc";
+import { ReversePipe } from "./reverse";
 import { TrimStringPipe } from "./trim";
 
-export * from "./trim";
-export * from "./reverse";
 export * from "./display";
+export * from "./wc";
+export * from "./reverse";
+export * from "./trim";
 
 export const PIPES_MISC: PipeCategory = {
     id: 'misc',
@@ -14,6 +16,7 @@ export const PIPES_MISC: PipeCategory = {
 
     pipes: [
         DisplayPipe,
+        WcPipe,
         ReversePipe,
         TrimStringPipe,
     ],
