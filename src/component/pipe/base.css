@@ -70,6 +70,10 @@ div.sp-pipe-title {
     font-weight: bold;
 }
 
+div.sp-pipe-args {
+    margin: .5em 0;
+}
+
 div.sp-pipe-error {
     background-color: #FEE;
     border: solid 2px #FAA;

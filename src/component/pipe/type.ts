@@ -36,5 +36,5 @@ export interface PipeCategoryMetadata {
 }
 
 export interface PipeCategory extends PipeCategoryMetadata {
-    entries: PipeDefinition[];
+    pipes: PipeDefinition[];
 }

@@ -32,7 +32,7 @@ export function PipeCatalogCategory({category, onSelect}: PipeCatalogCategoryPro
     return <div class={classNames("sp-pipe-catalog-category")}>
         <div class="sp-pipe-catalog-category-name">{category.name ?? category.id}</div>
         <div class="sp-pipe-catalog-category-items">
-            { category.entries.map(entry => <PipeCatalogItem key={entry.id} entry={entry} onClick={() => onSelect?.(entry.id)} />) }
+            { category.pipes.map(entry => <PipeCatalogItem key={entry.id} entry={entry} onClick={() => onSelect?.(entry.id)} />) }
         </div>
     </div>
 }

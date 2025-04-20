@@ -10,7 +10,7 @@ export const PIPES_ENCODING: PipeCategory = {
     name: 'Encoding',
     description: "Conversion between string and bytes.",
 
-    entries: [
+    pipes: [
         UnicodeEncodePipe,
         UnicodeDecodePipe,
         Base64EncodePipe,

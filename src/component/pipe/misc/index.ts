@@ -12,7 +12,7 @@ export const PIPES_MISC: PipeCategory = {
     name: 'Miscellaneous',
     description: "Miscellaneous string and bytes manipulation.",
 
-    entries: [
+    pipes: [
         DisplayPipe,
         ReversePipe,
         TrimStringPipe,
