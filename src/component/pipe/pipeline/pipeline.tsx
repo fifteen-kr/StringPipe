@@ -18,7 +18,7 @@ interface PipeState {
 }
 
 function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefinition|null {
-    if(from_type === 'all' || to_type === 'all') return null;
+    if(to_type === 'all') return null;
 
     switch(`${from_type}-${to_type}`) {
         case "string-bytes": {
@@ -59,13 +59,15 @@ export function Pipeline() {
                 { id: uuidv4(), pipe_def, output: null },
             ];
 
-            if(pipes[i].pipe_def.outputType !== pipe_def.inputType) {
-                const converter = getCastPipe(pipes[i].pipe_def.outputType, pipe_def.inputType);
+            const prev_out_type = getDataTypeName(pipes[i].output, pipes[i].pipe_def.outputType);
+            if(prev_out_type !== pipe_def.inputType) {
+                const converter = getCastPipe(prev_out_type, pipe_def.inputType);
                 if(converter) insert_pipes.unshift({ id: uuidv4(), pipe_def: converter, output: null });
             }
 
-            if(i+1 < pipes.length && pipes[i+1].pipe_def.inputType !== pipe_def.outputType) {
-                const converter = getCastPipe(pipe_def.outputType, pipes[i+1].pipe_def.inputType);
+            const next_in_type = i+1 < pipes.length ? getDataTypeName(pipes[i].output, pipes[i+1].pipe_def.inputType) : null;
+            if(next_in_type != null && next_in_type !== pipe_def.outputType) {
+                const converter = getCastPipe(pipe_def.outputType, next_in_type);
                 if(converter) insert_pipes.push({ id: uuidv4(), pipe_def: converter, output: null });
             }
 
