@@ -115,8 +115,8 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
     metadata: PipeMetadata<InputTypeName, OutputTypeName>,
     pipeFunction: PipeFunctionWithParams<InputTypeName, OutputTypeName, ParamsType>,
     default_params: ParamsType,
-    ParamsComponent?: ComponentType<{params: ParamsType, onChangeParams: (params: Partial<ParamsType>) => void}>,
-    DisplayComponent?: ComponentType<DisplayComponentProps<OutputTypeName>>,
+    ParamsComponent?: ComponentType<{params: ParamsType, onChangeParams: (params: Partial<ParamsType>) => void}>|null,
+    DisplayComponent?: ComponentType<DisplayComponentProps<OutputTypeName>>|null,
 ): PipeDefinition<InputTypeName, OutputTypeName> {
     return {
         ...metadata,
