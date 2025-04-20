@@ -6,8 +6,9 @@ export function App() {
     return <div className="sp-app">
         <Pipeline />
         <p style="margin-top: 1em; padding: .5em 1em;">
-            StringPipe is an easy-to-use tool, supporting both desktop and mobile, for processing strings and bytes in a type-safe manner.<br/>
-            StringPipe is currently work-in-progress, and many features are planned.
+            <b>StringPipe</b> is a zero-install, web-based playground for converting, analyzing, and hashing texts and bytes.<br/>
+            Note that StringPipe is still in development. Some features (such as hash functions) may not have been implemented yet.<br/><br/>
+            Check out the source code on <a href="https://github.com/fifteen-kr/StringPipe" target="_blank">GitHub</a>.
         </p>
     </div>;
 }
