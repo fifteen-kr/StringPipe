@@ -43,7 +43,7 @@ export const RotPipe = definePipe(
         }, [onChangeParams]);
 
         return <div>
-            <label>Rotation Amount: <input type="number" value={params.amount} onChange={handleOnChange} /></label>
+            <label>Rotation Amount: <input type="number" step="1" value={params.amount} onChange={handleOnChange}/></label>
         </div>;
     },
 );
