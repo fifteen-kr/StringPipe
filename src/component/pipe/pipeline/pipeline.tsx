@@ -9,6 +9,7 @@ import { StringInputPipe } from "../input";
 
 import { PipeGap } from "./gap";
 import { PIPE_BY_ID } from "../catalog";
+import { getDataTypeName } from "../data";
 
 interface PipeState {
     id: string;
@@ -17,6 +18,8 @@ interface PipeState {
 }
 
 function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefinition|null {
+    if(from_type === 'all' || to_type === 'all') return null;
+
     switch(`${from_type}-${to_type}`) {
         case "string-bytes": {
             return PIPE_BY_ID.get("unicode-encode") ?? null;
@@ -33,7 +36,7 @@ export function Pipeline() {
         return [{
             id: uuidv4(),
             pipe_def: StringInputPipe,
-            output: null,
+            output: "",
         }];
     });
 
@@ -79,7 +82,7 @@ export function Pipeline() {
     }, []);
 
     return <div class="sp-pipeline">
-        { pipes.map(({id, pipe_def}, i) => {
+        { pipes.map(({id, pipe_def, output}, i) => {
             return <>
                 <pipe_def.Component
                     key={id}
@@ -88,8 +91,8 @@ export function Pipeline() {
                     onClickRemove={i > 0 ? () => handleOnClickRemovePipe(id) : (void 0)}
                 />
                 <PipeGap
-                    inputType={pipe_def.inputType}
-                    outputType={pipe_def.outputType}
+                    inputType={getDataTypeName(output)}
+                    outputType={getDataTypeName(output)}
                     defaultShowCatalog={i+1 === pipes.length}
                     onClickAddPipe={(catalog_def) => handleOnClickAddPipeAfter(id, catalog_def)}
                 />

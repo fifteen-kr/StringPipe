@@ -1,14 +1,15 @@
+import type { Bytes } from "../type";
 import { definePipe } from "../base";
 
-export const ReverseStringPipe = definePipe(
+export const ReversePipe = definePipe(
     {
-        id: "reverse-string",
-        name: "Reverse String",
-        description: "Reverse a string.",
+        id: "reverse",
+        name: "Reverse",
+        description: "Reverse the input.",
     
-        inputType: 'string',
-        outputType: 'string',
+        inputType: 'all',
+        outputType: 'all',
     },
-    (input: string) => Promise.resolve([...input].reverse().join("")),
+    (input: string|Bytes) => Promise.resolve(typeof input === 'string' ? [...input].reverse().join("") : input.toReversed()),
     {},
 );

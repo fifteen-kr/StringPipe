@@ -7,7 +7,8 @@ import { TextArea } from "@/component/common/textarea";
 import { BytesView, StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
-import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams } from "./type";
+import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, DataType } from "./type";
+import { getDataTypeName, getDefaultData, validateValue } from "./data";
 
 export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>
     = PipeProps & {
@@ -21,16 +22,6 @@ export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName ext
     title?: ReactNode;
     children?: ReactNode;
 };
-
-function validateValue<D extends DataTypeName>(data_type: D, value: unknown): value is ToDataType<D> {
-    switch(data_type) {
-        case "all": return typeof value === "string" || value instanceof Uint8Array;
-        case "string": return typeof value === "string";
-        case "bytes": return value instanceof Uint8Array;
-        case "null": return value == null;
-        default: return false;
-    }
-}
 
 export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>(props: BasePipeProps<InputTypeName, OutputTypeName>) {
     const {
@@ -84,7 +75,10 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
         })();
     }, [pipeFunction, input_type, input_value]);
 
-    return <div className={classNames("sp-pipe", class_name, `sp-pipe-input-${input_type}`, `sp-pipe-output-${output_type}`)}>
+    const input_value_type_name = getDataTypeName(input_value, input_type);
+    const output_value_type_name = getDataTypeName(output_value, output_type);
+
+    return <div className={classNames("sp-pipe", class_name, `sp-pipe-input-${input_value_type_name}`, `sp-pipe-output-${output_value_type_name}`)}>
         <div className="sp-pipe-header">
             { title && <div className="sp-pipe-title">{ title }</div> }
             { onClickRemove && <button title="Remove this pipe." onClick={onClickRemove}>X</button> }
