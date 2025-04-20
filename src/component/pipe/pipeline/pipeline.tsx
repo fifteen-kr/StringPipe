@@ -94,6 +94,8 @@ export function Pipeline() {
                     inputType={getDataTypeName(output)}
                     outputType={getDataTypeName(output)}
                     defaultShowCatalog={i+1 === pipes.length}
+                    alwaysShowCatalog={pipes.length <= 1}
+                    showToggleFold={pipes.length > 1}
                     onClickAddPipe={(catalog_def) => handleOnClickAddPipeAfter(id, catalog_def)}
                 />
             </>;

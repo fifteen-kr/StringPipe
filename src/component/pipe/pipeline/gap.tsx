@@ -12,11 +12,13 @@ interface PipeGapProps {
     outputType?: DataTypeName;
 
     defaultShowCatalog?: boolean;
+    alwaysShowCatalog?: boolean;
+    showToggleFold?: boolean;
 
     onClickAddPipe?: (pipe_def: PipeDefinition) => void;
 }
 
-export function PipeGap({ inputType, outputType, defaultShowCatalog: default_show_catalog, onClickAddPipe }: PipeGapProps) {
+export function PipeGap({ inputType, outputType, defaultShowCatalog: default_show_catalog, alwaysShowCatalog: always_show_catalog, showToggleFold: show_toggle_fold = true, onClickAddPipe }: PipeGapProps) {
     const [show_catalog, setShowCatalog] = useState(default_show_catalog ?? false);
 
     const toggleShowCatalog = useCallback(() => {
@@ -33,7 +35,7 @@ export function PipeGap({ inputType, outputType, defaultShowCatalog: default_sho
     }, [onClickAddPipe]);
 
     return <div class={classNames("sp-pipe-gap", `sp-pipe-gap-${inputType ?? 'null'}`)}>
-        <button class="sp-pipe-gap-toggle-fold" onClick={toggleShowCatalog}>{ show_catalog ? "Hide" : "Insert Pipe" }</button>
-        { show_catalog && <PipeCatalog categories={PIPE_CATEGORIES} onSelect={handleOnSelect} /> }
+        { show_toggle_fold && <button class="sp-pipe-gap-toggle-fold" onClick={toggleShowCatalog}>{ show_catalog ? "Hide" : "Insert Pipe" }</button> }
+        { (show_catalog || always_show_catalog) && <PipeCatalog categories={PIPE_CATEGORIES} onSelect={handleOnSelect} /> }
     </div>;
 }

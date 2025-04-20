@@ -16,6 +16,7 @@ export function PipeCatalog(props: PipeCatalogProps) {
     } = props;
 
     return <div class="sp-pipe-catalog">
+        <p class="sp-pipe-catalog-instruction">Choose a pipe to insert!</p>
         <div class="sp-pipe-catalog-categories">
             { categories.map(category => <PipeCatalogCategory key={category.id} category={category} onSelect={onSelect} />) }
         </div>
@@ -43,7 +44,7 @@ export interface PipeCatalogItemProps<InputTypeName extends DataTypeName, Output
 }
 
 export function PipeCatalogItem({entry, onClick}: PipeCatalogItemProps<DataTypeName, DataTypeName>) {
-    return <div class={classNames("sp-pipe-catalog-item")} onClick={onClick}>
+    return <div class={classNames("sp-pipe-catalog-item")} title={entry.description} onClick={onClick}>
         {entry.name ?? entry.id}
     </div>
 }

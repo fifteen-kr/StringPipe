@@ -8,7 +8,7 @@ import { BytesView, StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
 import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, DataType } from "./type";
-import { getDataTypeName, getDefaultData, validateValue } from "./data";
+import { getDataTypeName, validateValue } from "./data";
 
 export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>
     = PipeProps & {
@@ -81,7 +81,7 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
     return <div className={classNames("sp-pipe", class_name, `sp-pipe-input-${input_value_type_name}`, `sp-pipe-output-${output_value_type_name}`)}>
         <div className="sp-pipe-header">
             { title && <div className="sp-pipe-title">{ title }</div> }
-            { onClickRemove && <button title="Remove this pipe." onClick={onClickRemove}>X</button> }
+            { onClickRemove && <button title="Remove this pipe." onClick={onClickRemove}>❌</button> }
         </div>
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
