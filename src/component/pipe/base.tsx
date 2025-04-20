@@ -10,12 +10,22 @@ import { classNames } from "@/util";
 import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, DataType } from "./type";
 import { getDataTypeName, validateValue } from "./data";
 
+
+type DisplayComponentProps<D extends DataTypeName> = { value: ToDataType<D> };
+
+function DefaultDisplayComponent<D extends DataTypeName>({value}: DisplayComponentProps<D>) {
+    if(typeof value === "string") return <StringView value={value} />;
+    if(value instanceof Uint8Array) return <BytesView value={value} />;
+    return `${value}`;
+}
+
 export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>
     = PipeProps & {
     inputType: InputTypeName;
     outputType: OutputTypeName;
 
     pipeFunction?: PipeFunction<InputTypeName, OutputTypeName>;
+    outputView?: ComponentType<{value: ToDataType<OutputTypeName>}>;
 
     className?: string;
 
@@ -26,6 +36,8 @@ export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName ext
 export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>(props: BasePipeProps<InputTypeName, OutputTypeName>) {
     const {
         pipeFunction,
+        outputView: OutputView = DefaultDisplayComponent,
+
         onOutputChange,
 
         inputValue: input_value,
@@ -86,16 +98,25 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
         { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
         { children }
         { last_error != null && <div className="sp-pipe-error">{ `${last_error}` }</div> }
-        { typeof output_value === 'string' && <StringView value={output_value} /> }
-        { output_value instanceof Uint8Array && <BytesView value={output_value} />  }
+        { output_value != null && <OutputView value={output_value} /> }
     </div>;
 }
 
+/**
+ * Define a pipe.
+ * @param metadata Metadata for the pipe, such as its name, description, input type, and output type.
+ * @param pipeFunction The function that performs the pipe's operation.
+ * @param default_params Default parameters for the pipe.
+ * @param ParamsComponent Component for displaying and editing the pipe's parameters.
+ * @param DisplayComponent Component for displaying the pipe's output. If not provided, a default component will be used.
+ * @returns 
+ */
 export function definePipe<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object>(
     metadata: PipeMetadata<InputTypeName, OutputTypeName>,
     pipeFunction: PipeFunctionWithParams<InputTypeName, OutputTypeName, ParamsType>,
     default_params: ParamsType,
     ParamsComponent?: ComponentType<{params: ParamsType, onChangeParams: (params: Partial<ParamsType>) => void}>,
+    DisplayComponent?: ComponentType<DisplayComponentProps<OutputTypeName>>,
 ): PipeDefinition<InputTypeName, OutputTypeName> {
     return {
         ...metadata,
@@ -117,6 +138,8 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
                 outputType={metadata.outputType}
 
                 pipeFunction={callPipeFunction}
+                outputView={DisplayComponent}
+
                 {...props}
             >
                 { ParamsComponent && <div class="sp-pipe-args"><ParamsComponent params={params} onChangeParams={handleOnChangeParams} /></div> }
