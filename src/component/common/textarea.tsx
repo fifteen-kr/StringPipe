@@ -10,12 +10,7 @@ export function TextArea(props: TextAreaProps) {
     } = props;
 
     const handleOnChange = useCallback((e: Event) => {
-        if(!onChange) return;
-
-        const target = e.currentTarget;
-        if(!target || !(target instanceof HTMLTextAreaElement)) return;
-
-        onChange(target.value);
+        onChange?.((e.currentTarget as HTMLTextAreaElement).value);
     }, [onChange]);
 
     return <textarea onInput={handleOnChange} rows={4} />;

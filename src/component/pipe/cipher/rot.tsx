@@ -30,10 +30,7 @@ export const RotPipe = definePipe(
     {amount: 13},
     ({params, onChangeParams}) => {
         const handleOnChange = useCallback((e: Event) => {
-            if(!e.currentTarget) return;
-            if(!(e.currentTarget instanceof HTMLInputElement)) return;
-
-            const value = e.currentTarget.value;
+            const value = (e.currentTarget as HTMLInputElement).value;
             let parsed_value: number;
 
             try {

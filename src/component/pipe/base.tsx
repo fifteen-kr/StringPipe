@@ -145,7 +145,7 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
 
                 {...props}
             >
-                { ParamsComponent && <div class="sp-pipe-args"><ParamsComponent params={params} onChangeParams={handleOnChangeParams} /></div> }
+                { ParamsComponent && <div class="sp-pipe-params"><ParamsComponent params={params} onChangeParams={handleOnChangeParams} /></div> }
             </BasePipe>
         },
     };

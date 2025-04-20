@@ -82,11 +82,7 @@ export const WcPipe = definePipe<'all', 'all', WcParams>(
     },
     ({params, onChangeParams}) => {
         const handleOnChangeAutoTrailingNewline = useCallback((e: Event) => {
-            const target = e.currentTarget;
-            if(!target) return;
-            if(!(target instanceof HTMLInputElement)) return;
-
-            onChangeParams({auto_trailing_newline: target.checked});
+            onChangeParams({auto_trailing_newline: (e.currentTarget as HTMLInputElement).checked});
         }, [onChangeParams])
         return <div><label>Add Trailing Newline if Missing: <input type="checkbox" checked={params.auto_trailing_newline} onChange={handleOnChangeAutoTrailingNewline} /></label></div>;
     },

@@ -70,8 +70,16 @@ div.sp-pipe-title {
     font-weight: bold;
 }
 
-div.sp-pipe-args {
+div.sp-pipe-params {
     padding: .4em .8em;
+}
+
+div.sp-pipe-params-row {
+    display: flex;
+    flex-direction: row;
+
+    gap: .5em;
+    padding: .1em 0;
 }
 
 div.sp-pipe-error {
