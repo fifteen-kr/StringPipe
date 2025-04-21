@@ -10,6 +10,6 @@ export const TrimStringPipe = definePipe(
         inputType: 'string',
         outputType: 'string',
     },
-    (input: StringDataType) => Promise.resolve(input.trim()),
+    (data: StringDataType) => Promise.resolve(data.value.trim()),
     {},
 );

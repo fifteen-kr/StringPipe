@@ -1,4 +1,4 @@
-import type { BytesDataType, StringDataType } from "../type";
+import type { BytesDataType, StringDataType, UnderlyingBytesDataType, UnderlyingStringDataType } from "../type";
 import { definePipe } from "../base";
 
 export const UnicodeEncodePipe = definePipe(
@@ -10,9 +10,9 @@ export const UnicodeEncodePipe = definePipe(
         inputType: 'string',
         outputType: 'bytes',
     },
-    async (input: StringDataType, {encoding}): Promise<BytesDataType> => {
+    async ({value}: StringDataType, {encoding}): Promise<UnderlyingBytesDataType> => {
         if(encoding !== 'utf-8') throw new Error(`Unsupported encoding: '${encoding}'`);
-        return new TextEncoder().encode(input);
+        return new TextEncoder().encode(value);
     },
     {encoding: "utf-8"},
 );
@@ -26,9 +26,9 @@ export const UnicodeDecodePipe = definePipe(
         inputType: 'bytes',
         outputType: 'string',
     },
-    async (input: BytesDataType, {encoding}): Promise<StringDataType> => {
+    async ({value}: BytesDataType, {encoding}): Promise<UnderlyingStringDataType> => {
         if(encoding !== 'utf-8') throw new Error(`Unsupported encoding: '${encoding}'`);
-        return new TextDecoder().decode(input);
+        return new TextDecoder().decode(value);
     },
     {encoding: "utf-8"},
 );

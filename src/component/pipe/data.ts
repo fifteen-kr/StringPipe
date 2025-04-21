@@ -1,15 +1,16 @@
-import type { BytesDataType, DataType, DataTypeName, StringDataType, ToDataType } from "./type"
+import type { BytesDataType, DataType, DataTypeName, StringDataType, ToDataType, ToUnderlyingDataType, UnderlyingDataType } from "./type"
 
-export function isStringDataType(value: unknown): value is StringDataType {
-    return typeof value === "string";
-}
-
-export function isBytesDataType(value: unknown): value is BytesDataType {
+export function isStringDataType(value: DataType|null|undefined): value is StringDataType {
     if(!value) return false;
-    return value instanceof Uint8Array;
+    return value.type === 'string';
 }
 
-export function validateValue<D extends DataTypeName>(data_type: D, value: unknown): value is ToDataType<D> {
+export function isBytesDataType(value: DataType|null|undefined): value is BytesDataType {
+    if(!value) return false;
+    return value.type === 'bytes';
+}
+
+export function validateValue<D extends DataTypeName>(data_type: D, value: DataType|null|undefined): value is ToDataType<D> {
     switch(data_type) {
         case "all": return isStringDataType(value) || isBytesDataType(value);
         case "string": return isStringDataType(value);
@@ -27,8 +28,8 @@ export function getDataTypeName(value: DataType|null|undefined, hint_type_name?:
     throw new Error(`Unknown data type: ${typeof value}`);
 }
 
-const DEFAULT_STRING: Readonly<StringDataType> = "";
-const DEFAULT_BYTES: Readonly<BytesDataType> = new Uint8Array();
+export const DEFAULT_STRING: Readonly<StringDataType> = { type: 'string', value: "" };
+export const DEFAULT_BYTES: Readonly<BytesDataType> = { type: 'bytes', value: new Uint8Array() };
 
 export function getDefaultData<D extends DataTypeName>(data_type: D): Readonly<ToDataType<D>> {
     switch(data_type) {
@@ -37,4 +38,16 @@ export function getDefaultData<D extends DataTypeName>(data_type: D): Readonly<T
         case 'bytes': return DEFAULT_BYTES as ToDataType<D>;
         case 'all': return DEFAULT_STRING as ToDataType<D>;
     }
+}
+
+export function normalizeData<D extends DataTypeName>(data_type: ToDataType<D>|ToUnderlyingDataType<D>): ToDataType<D>;
+export function normalizeData<D extends DataTypeName>(data_type: ToDataType<D>|ToUnderlyingDataType<D>|null|undefined): ToDataType<D>|null;
+export function normalizeData<D extends DataTypeName>(data_type: ToDataType<D>|ToUnderlyingDataType<D>|null|undefined): ToDataType<D>|null {
+    if(data_type == null) return null;
+
+    if(typeof data_type === 'string') return { type: 'string', value: data_type } as ToDataType<D>;
+    if(data_type instanceof Uint8Array) return { type: 'bytes', value: data_type } as ToDataType<D>;
+    
+    if(!(typeof data_type === 'object' && 'type' in data_type && 'value' in data_type)) throw new Error(`Invalid data type: ${typeof data_type}`);
+    return data_type as ToDataType<D>;
 }

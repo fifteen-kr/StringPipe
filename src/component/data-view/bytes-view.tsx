@@ -3,17 +3,18 @@ import "./bytes-view.css";
 
 import { useCallback, useMemo } from "preact/hooks";
 import { saveFile } from "@/lib/file-io";
+import { BytesDataType } from "../pipe";
 
 export interface BytesViewProps {
-    value: Uint8Array;
+    data: BytesDataType;
 }
 
-export function BytesView({value}: BytesViewProps) {
-    const hex_dumps = useMemo(() => [...value].map((byte) => byte.toString(16).padStart(2, '0')), [value]);
+export function BytesView({data}: BytesViewProps) {
+    const hex_dumps = useMemo(() => [...data.value].map((byte) => byte.toString(16).padStart(2, '0')), [data.value]);
 
     const onClickSave = useCallback(async () => {
-        await saveFile("output.bin", new Blob([value], {type: "application/octet-stream"}));
-    }, [value]);
+        await saveFile("output.bin", new Blob([data.value], {type: "application/octet-stream"}));
+    }, [data.value]);
 
     return <div class="sp-data-view sp-bytes-view">
         <div class="sp-bytes-view-content">{ hex_dumps.map((byte) => <span>{byte}</span>) }</div>

@@ -1,5 +1,6 @@
 import { definePipe } from "../base";
-import { DataType, StringDataType } from "../type";
+import { isStringDataType } from "../data";
+import { DataType, StringDataType, UnderlyingStringDataType } from "../type";
 
 interface ToJSONLiteralParams {
 }
@@ -13,11 +14,11 @@ export const ToJSONLiteralPipe = definePipe(
         inputType: 'all',
         outputType: 'string',
     },
-    async (input: DataType): Promise<StringDataType> => {
-        if(typeof input === 'string') {
-            return JSON.stringify(input);
+    async (input: DataType): Promise<UnderlyingStringDataType> => {
+        if(isStringDataType(input)) {
+            return JSON.stringify(input.value);
         } else {
-            return JSON.stringify(Array.from(input));
+            return JSON.stringify(Array.from(input.value));
         }
     },
     {},

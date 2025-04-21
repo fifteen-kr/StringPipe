@@ -23,9 +23,9 @@ export const RotPipe = definePipe(
         if(amount < 0) amount += 26;
 
         if(isStringDataType(input)) {
-            return input.replace(/[a-zA-Z]/g, (c) => String.fromCharCode(rotChar(c.charCodeAt(0), amount)));
+            return input.value.replace(/[a-zA-Z]/g, (c) => String.fromCharCode(rotChar(c.charCodeAt(0), amount)));
         } else {
-            return input.map((ch) => rotChar(ch, amount));
+            return input.value.map((ch) => rotChar(ch, amount));
         }
     },
     {amount: 13},

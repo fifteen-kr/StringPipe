@@ -11,6 +11,6 @@ export const ReversePipe = definePipe(
         inputType: 'all',
         outputType: 'all',
     },
-    (input: DataType) => Promise.resolve(isStringDataType(input) ? [...input].reverse().join("") : input.toReversed()),
+    (data: DataType) => Promise.resolve(isStringDataType(data) ? [...data.value].reverse().join("") : data.value.toReversed()),
     {},
 );

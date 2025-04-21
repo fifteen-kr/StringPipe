@@ -4,6 +4,7 @@ import type { BytesDataType, DataType, StringDataType } from "../type";
 import { definePipe } from "../base";
 
 import { StringView } from "@/component/data-view";
+import { isStringDataType } from "../data";
 
 interface WcParams {
     auto_trailing_newline: boolean;
@@ -15,7 +16,7 @@ interface WcResult {
     lines: number;
 }
 
-function wcString(input: StringDataType, params: WcParams): WcResult {
+function wcString({value: input}: StringDataType, params: WcParams): WcResult {
     let chars = 0;
     let words = 0;
     let lines = 0;
@@ -41,7 +42,7 @@ function wcString(input: StringDataType, params: WcParams): WcResult {
     return {chars, words, lines};
 }
 
-function wcBytes(input: BytesDataType, params: WcParams): WcResult {
+function wcBytes({value: input}: BytesDataType, params: WcParams): WcResult {
     let chars = 0;
     let words = 0;
     let lines = 0;
@@ -86,8 +87,8 @@ export const WcPipe = definePipe<'all', 'all', WcParams>(
         }, [onChangeParams])
         return <div><label>Add Trailing Newline if Missing: <input type="checkbox" checked={params.auto_trailing_newline} onChange={handleOnChangeAutoTrailingNewline} /></label></div>;
     },
-    (params) => ({value}) => {
-        const result: WcResult = (typeof value === 'string') ? wcString(value, params) : wcBytes(value, params);
-        return <StringView value={`Lines: ${result.lines}, Words: ${result.words}, Chars: ${result.chars}`}/>
+    (params) => ({data}) => {
+        const result: WcResult = isStringDataType(data) ? wcString(data, params) : wcBytes(data, params);
+        return <StringView data={{type: 'string', value: `Lines: ${result.lines}, Words: ${result.words}, Chars: ${result.chars}`}}/>
     },
 );

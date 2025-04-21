@@ -7,18 +7,18 @@ import { TextArea } from "@/component/common/textarea";
 import { BytesView, StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
-import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, DataType } from "./type";
-import { getDataTypeName, isBytesDataType, isStringDataType, validateValue } from "./data";
+import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, ToUnderlyingDataType } from "./type";
+import { getDataTypeName, isBytesDataType, isStringDataType, normalizeData, validateValue } from "./data";
 
 interface DisplayComponentProps<D extends DataTypeName> {
-    value: ToDataType<D>;
+    data: ToDataType<D>;
 }
 
-function DefaultDisplayComponent<D extends DataTypeName>({value}: DisplayComponentProps<D>) {
-    if(value == null) return null;
-    if(isStringDataType(value)) return <StringView value={value} />;
-    if(isBytesDataType(value)) return <BytesView value={value} />;
-    return `${value}`;
+function DefaultDisplayComponent<D extends DataTypeName>({data}: DisplayComponentProps<D>) {
+    if(data == null) return null;
+    if(isStringDataType(data)) return <StringView data={data} />;
+    if(isBytesDataType(data)) return <BytesView data={data} />;
+    return `${data}`;
 }
 
 export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName>
@@ -27,7 +27,7 @@ export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName ext
     outputType: OutputTypeName;
 
     pipeFunction?: PipeFunction<InputTypeName, OutputTypeName>;
-    outputView?: ComponentType<{value: ToDataType<OutputTypeName>}>|null;
+    outputView?: ComponentType<{data: ToDataType<OutputTypeName>}>|null;
 
     className?: string;
 
@@ -92,15 +92,19 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
     const input_value_type_name = getDataTypeName(input_value, input_type);
     const output_value_type_name = getDataTypeName(output_value, output_type);
 
+    const handleOnTextAreaChange = useCallback((input: string) => {
+        onOutputChange?.({type: 'string', value: input});
+    }, [onOutputChange]);
+
     return <div className={classNames("sp-pipe", class_name, `sp-pipe-input-${input_value_type_name}`, `sp-pipe-output-${output_value_type_name}`)}>
         <div className="sp-pipe-header">
             { title && <div className="sp-pipe-title">{ title }</div> }
             { onClickRemove && <button title="Remove this pipe." onClick={onClickRemove}>❌</button> }
         </div>
-        { input_type == 'null' && <TextArea onChange={onOutputChange as ((input: string) => void | undefined)} /> }
+        { input_type == 'null' && <TextArea onChange={handleOnTextAreaChange} /> }
         { children }
         { last_error != null && <div className="sp-pipe-error">{ `${last_error}` }</div> }
-        { output_value != null && OutputView != null && <OutputView value={output_value} /> }
+        { output_value != null && OutputView != null && <OutputView data={output_value} /> }
     </div>;
 }
 
@@ -130,7 +134,10 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
             }, [setParams]);
 
             const callPipeFunction = useCallback(async (input: ToDataType<InputTypeName>): Promise<ToDataType<OutputTypeName>>  => {
-                return await pipeFunction(input, params);
+                if(input == null) return null as ToDataType<OutputTypeName>;
+
+                const result = await pipeFunction(input, params);
+                return normalizeData(result);
             }, [params]);
 
             const outputView = useMemo(() => outputViewFactory ? outputViewFactory(params) : (void 0), [outputViewFactory, params]);
