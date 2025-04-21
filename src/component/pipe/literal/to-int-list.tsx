@@ -37,7 +37,7 @@ function valueToIntList(value: string|Bytes): number[] {
 export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
     {
         id: "to-int-list",
-        name: "To Int List",
+        name: "Data ⇨ Int List",
         description: "Convert the value to a list of integers.",
 
         inputType: 'all',

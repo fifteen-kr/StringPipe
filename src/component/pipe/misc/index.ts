@@ -4,11 +4,6 @@ import { WcPipe } from "./wc";
 import { ReversePipe } from "./reverse";
 import { TrimStringPipe } from "./trim";
 
-export * from "./display";
-export * from "./wc";
-export * from "./reverse";
-export * from "./trim";
-
 export const PIPES_MISC: PipeCategory = {
     id: 'misc',
     name: 'Miscellaneous',

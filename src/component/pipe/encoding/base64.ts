@@ -100,7 +100,7 @@ function base64Decode(input: string): Bytes {
 export const Base64EncodePipe = definePipe(
     {
         id: 'base64-encode',
-        name: 'Base64 Encode',
+        name: 'Bytes ⇨ Base64',
         description: "Encode bytes to base64 string.",
 
         inputType: 'bytes',
@@ -115,7 +115,7 @@ export const Base64EncodePipe = definePipe(
 export const Base64DecodePipe = definePipe(
     {
         id: 'base64-decode',
-        name: 'Base64 Decode',
+        name: 'Base64 ⇨ Bytes',
         description: "Decode base64 string to bytes.",
 
         inputType: 'string',

@@ -1,9 +1,8 @@
 import type { PipeCategory } from "../type";
 import { BytesFromIntListPipe } from "./from-int-list";
 import { ToIntListPipe } from "./to-int-list";
+import { ToJSONLiteralPipe } from "./json";
 import { ToPythonLiteralPipe } from "./python";
-
-export * from "./python";
 
 export const PIPES_LITERAL: PipeCategory = {
     id: "literal",
@@ -13,6 +12,7 @@ export const PIPES_LITERAL: PipeCategory = {
     pipes: [
         BytesFromIntListPipe,
         ToIntListPipe,
+        ToJSONLiteralPipe,
         ToPythonLiteralPipe,
     ],
 };

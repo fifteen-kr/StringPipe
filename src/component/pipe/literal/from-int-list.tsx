@@ -30,7 +30,7 @@ function parseIntList(input: string): number[] {
 export const BytesFromIntListPipe = definePipe<'string', 'bytes', {}>(
     {
         id: "bytes-from-int-list",
-        name: "Bytes from Int List",
+        name: "Int List ⇨ Bytes",
         description: "Convert a list of integers to bytes.",
 
         inputType: 'string',

@@ -4,7 +4,7 @@ import { Bytes } from "../type";
 export const ToPythonLiteralPipe = definePipe(
     {
         id: "to-python-literal",
-        name: "To Python Literal",
+        name: "Data ⇨ Python",
         description: "Convert the value to a Python literal.",
 
         inputType: 'all',
