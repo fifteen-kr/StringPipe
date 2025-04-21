@@ -1,5 +1,6 @@
 import type { PipeCategory } from "../type";
-import { ToIntListPipe } from "./int-list";
+import { BytesFromIntListPipe } from "./from-int-list";
+import { ToIntListPipe } from "./to-int-list";
 import { ToPythonLiteralPipe } from "./python";
 
 export * from "./python";
@@ -10,6 +11,7 @@ export const PIPES_LITERAL: PipeCategory = {
     description: "Convert to/from literals of various programming languages.",
 
     pipes: [
+        BytesFromIntListPipe,
         ToIntListPipe,
         ToPythonLiteralPipe,
     ],
