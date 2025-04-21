@@ -30,6 +30,43 @@ For example, you can compose a pipeline like `Input → UTF-8 → SHA-256 → Ba
 - Cipher
   - ROT (including ROT13)
 
+## Development
+
+### Setup
+
+Install the following:
+
+- [Node.js](https://nodejs.org/)
+- [pnpm](https://pnpm.io/)
+
+Then, install dependencies:
+
+```sh
+pnpm install
+```
+
+### Debug
+
+```sh
+pnpm debug
+```
+
+This will start a development server at `http://localhost:8000/`.
+
+- `http://localhost:8000/debug`: hot-reloadable debug build
+- `http://localhost:8000/`: does not hot-reload
+
+### Build
+
+```sh
+pnpm build
+```
+
+Output files will be placed in the `/serve` directory.
+For deploying, you may want to exclude `/server/debug` from the directory, although it is not strictly necessary.
+
+You may use any static file server to serve the files, such as GitHub Pages.
+
 ## Planned Features
 
 ### Pipes
