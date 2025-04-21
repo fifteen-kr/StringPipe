@@ -1,5 +1,6 @@
 import { definePipe } from "../base";
-import { Bytes } from "../type";
+import { isStringDataType } from "../data";
+import { DataType, StringDataType } from "../type";
 
 export const ToPythonLiteralPipe = definePipe(
     {
@@ -10,8 +11,8 @@ export const ToPythonLiteralPipe = definePipe(
         inputType: 'all',
         outputType: 'string',
     },
-    async (input: string|Bytes): Promise<string> => {
-        if(typeof input === 'string') {
+    async (input: DataType): Promise<StringDataType> => {
+        if(isStringDataType(input)) {
             return JSON.stringify(input);
         } else {
             // Return a Python bytes string, leaving displayable characters as-is.

@@ -1,5 +1,5 @@
 import { definePipe } from "../base";
-import { Bytes } from "../type";
+import { DataType, StringDataType } from "../type";
 
 interface ToJSONLiteralParams {
 }
@@ -13,7 +13,7 @@ export const ToJSONLiteralPipe = definePipe(
         inputType: 'all',
         outputType: 'string',
     },
-    async (input: string|Bytes): Promise<string> => {
+    async (input: DataType): Promise<StringDataType> => {
         if(typeof input === 'string') {
             return JSON.stringify(input);
         } else {

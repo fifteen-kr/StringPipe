@@ -1,8 +1,8 @@
-import type { Bytes } from "../type";
+import type { BytesDataType, StringDataType } from "../type";
 
 import { definePipe } from "../base";
 
-function base64Encode(input: Bytes): string {
+function base64Encode(input: BytesDataType): StringDataType {
     // TODO: implement custom char #62 to #64
     const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
@@ -37,7 +37,7 @@ function base64Encode(input: Bytes): string {
     return output.map((ch) => base64_chars[ch]).join('');
 }
 
-function base64Decode(input: string): Bytes {
+function base64Decode(input: StringDataType): BytesDataType {
     // TODO: implement custom char #62 to #64
     const base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     const base64_lookup = new Map<string, number>(base64_chars.split('').map((ch, i) => [ch, i]));
@@ -106,7 +106,7 @@ export const Base64EncodePipe = definePipe(
         inputType: 'bytes',
         outputType: 'string',
     },
-    async (input: Bytes): Promise<string> => {
+    async (input: BytesDataType): Promise<StringDataType> => {
         return base64Encode(input);
     },
     {},
@@ -121,7 +121,7 @@ export const Base64DecodePipe = definePipe(
         inputType: 'string',
         outputType: 'bytes',
     },
-    async (input: string): Promise<Bytes> => {
+    async (input: StringDataType): Promise<BytesDataType> => {
         return base64Decode(input);
     },
     {},

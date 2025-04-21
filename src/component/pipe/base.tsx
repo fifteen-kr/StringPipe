@@ -8,15 +8,16 @@ import { BytesView, StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
 import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, DataType } from "./type";
-import { getDataTypeName, validateValue } from "./data";
+import { getDataTypeName, isBytesDataType, isStringDataType, validateValue } from "./data";
 
 interface DisplayComponentProps<D extends DataTypeName> {
     value: ToDataType<D>;
 }
 
 function DefaultDisplayComponent<D extends DataTypeName>({value}: DisplayComponentProps<D>) {
-    if(typeof value === "string") return <StringView value={value} />;
-    if(value instanceof Uint8Array) return <BytesView value={value} />;
+    if(value == null) return null;
+    if(isStringDataType(value)) return <StringView value={value} />;
+    if(isBytesDataType(value)) return <BytesView value={value} />;
     return `${value}`;
 }
 

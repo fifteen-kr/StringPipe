@@ -1,7 +1,8 @@
 import { useCallback, useId } from "preact/hooks";
 
 import { definePipe } from "../base";
-import { Bytes } from "../type";
+import { BytesDataType, DataType, StringDataType } from "../type";
+import { isStringDataType } from "../data";
 
 const INT_LITERAL_TYPES = [
     {id: 'hex', name: 'Hexadecimal (0xAB)', prefix: "0x", base: 16},
@@ -26,8 +27,8 @@ interface ToIntListParams {
     postfix: string;
 }
 
-function valueToIntList(value: string|Bytes): number[] {
-    if(typeof value === 'string') {
+function valueToIntList(value: DataType): number[] {
+    if(isStringDataType(value)) {
         return Array.from(value).map(c => c.codePointAt(0) ?? 0);
     } else {
         return Array.from(value);
@@ -43,7 +44,7 @@ export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
         inputType: 'all',
         outputType: 'string',
     },
-    async (input: string|Bytes, params: ToIntListParams): Promise<string> => {
+    async (input: DataType, params: ToIntListParams): Promise<StringDataType> => {
         const int_list = valueToIntList(input);
         const int_literal_type = INT_LITERAL_TYPE_BY_ID.get(params.int_literal_type)!;
 

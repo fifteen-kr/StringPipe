@@ -1,11 +1,18 @@
 import type { ComponentType } from "preact/compat";
 
-export type Bytes = Uint8Array;
-export type DataType = string | Bytes;
+export type StringDataType = string;
+export type BytesDataType = Uint8Array;
+export type DataType = StringDataType | BytesDataType;
 export type DataTypeName = "string" | "bytes" | "all" | "null";
-export type ToDataType<T extends DataTypeName> = T extends "string" ? string : T extends "bytes" ? Bytes : T extends "all" ? DataType : null;
-export type PipeFunction<InputTypeName extends DataTypeName = DataTypeName, OutputTypeName extends DataTypeName = DataTypeName> = (input: ToDataType<InputTypeName>) => Promise<ToDataType<OutputTypeName>>;
-export type PipeFunctionWithParams<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object> = (input: ToDataType<InputTypeName>, params: ParamsType) => Promise<ToDataType<OutputTypeName>>;
+export type ToDataType<T extends DataTypeName> = T extends "string" ? StringDataType : T extends "bytes" ? BytesDataType : T extends "all" ? DataType : null;
+
+export interface PipeFunction<InputTypeName extends DataTypeName = DataTypeName, OutputTypeName extends DataTypeName = DataTypeName> {
+    (input: ToDataType<InputTypeName>): Promise<ToDataType<OutputTypeName>>;
+}
+
+export interface PipeFunctionWithParams<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object> {
+    (input: ToDataType<InputTypeName>, params: ParamsType): Promise<ToDataType<OutputTypeName>>;
+}
 
 export interface PipeProps {
     inputValue?: DataType|null;

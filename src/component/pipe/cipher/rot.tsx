@@ -1,6 +1,7 @@
-import type { Bytes } from "../type";
+import type { DataType } from "../type";
 import { definePipe } from "../base";
 import { useCallback } from "preact/hooks";
+import { isStringDataType } from "../data";
 
 function rotChar(ch: number, amount: number): number {
     if(ch >= 65 && ch <= 90) return (ch - 65 + amount) % 26 + 65;
@@ -17,11 +18,11 @@ export const RotPipe = definePipe(
         inputType: 'all',
         outputType: 'all',
     },
-    async (input: string|Bytes, {amount}) => {
+    async (input: DataType, {amount}) => {
         amount %= 26;
         if(amount < 0) amount += 26;
 
-        if(typeof input === 'string') {
+        if(isStringDataType(input)) {
             return input.replace(/[a-zA-Z]/g, (c) => String.fromCharCode(rotChar(c.charCodeAt(0), amount)));
         } else {
             return input.map((ch) => rotChar(ch, amount));

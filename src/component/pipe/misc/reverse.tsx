@@ -1,5 +1,6 @@
-import type { Bytes } from "../type";
+import type { DataType } from "../type";
 import { definePipe } from "../base";
+import { isStringDataType } from "../data";
 
 export const ReversePipe = definePipe(
     {
@@ -10,6 +11,6 @@ export const ReversePipe = definePipe(
         inputType: 'all',
         outputType: 'all',
     },
-    (input: string|Bytes) => Promise.resolve(typeof input === 'string' ? [...input].reverse().join("") : input.toReversed()),
+    (input: DataType) => Promise.resolve(isStringDataType(input) ? [...input].reverse().join("") : input.toReversed()),
     {},
 );
