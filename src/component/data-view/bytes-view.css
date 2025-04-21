@@ -1,14 +1,16 @@
-div.sp-bytes-view {
+div.sp-bytes-view-content {
     background-color: var(--bg-color);
     border: solid 1px #666;
 
     font-family: monospace;
     font-size: 1em;
-    padding: .1em .2em;
+    padding: .2em .2em;
 
     display: flex;
     flex-wrap: wrap;
     gap: .25em;
+
+    min-height: 2.1em;
 
     & span {
         user-select: all;
