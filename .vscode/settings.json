@@ -3,7 +3,9 @@
         "arktype",
         "esbuild",
         "Jimin",
+        "reloadable",
         "servedir",
+        "uuidv",
         "vdom"
     ]
 }
