@@ -1,6 +1,6 @@
 import { useCallback } from "preact/hooks";
 
-import type { BytesDataType, DataType, StringDataType } from "../type";
+import type { BytesRef, RefType, StringRef } from "../type";
 import { definePipe } from "../base";
 
 import { StringView } from "@/component/data-view";
@@ -16,7 +16,7 @@ interface WcResult {
     lines: number;
 }
 
-function wcString({value: input}: StringDataType, params: WcParams): WcResult {
+function wcString({value: input}: StringRef, params: WcParams): WcResult {
     let chars = 0;
     let words = 0;
     let lines = 0;
@@ -42,7 +42,7 @@ function wcString({value: input}: StringDataType, params: WcParams): WcResult {
     return {chars, words, lines};
 }
 
-function wcBytes({value: input}: BytesDataType, params: WcParams): WcResult {
+function wcBytes({value: input}: BytesRef, params: WcParams): WcResult {
     let chars = 0;
     let words = 0;
     let lines = 0;
@@ -77,7 +77,7 @@ export const WcPipe = definePipe<'all', 'all', WcParams>(
         inputType: 'all',
         outputType: 'all',
     },
-    (input: DataType) => Promise.resolve(input),
+    (input: RefType) => Promise.resolve(input),
     {
         auto_trailing_newline: true,
     },

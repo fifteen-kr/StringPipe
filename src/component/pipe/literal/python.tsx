@@ -1,6 +1,6 @@
 import { definePipe } from "../base";
 import { isStringDataType } from "../data";
-import { DataType, StringDataType, UnderlyingStringDataType } from "../type";
+import { RefType, StringRef, StringDataType } from "../type";
 
 export const ToPythonLiteralPipe = definePipe(
     {
@@ -11,7 +11,7 @@ export const ToPythonLiteralPipe = definePipe(
         inputType: 'all',
         outputType: 'string',
     },
-    async (input: DataType): Promise<UnderlyingStringDataType> => {
+    async (input: RefType): Promise<StringDataType> => {
         if(isStringDataType(input)) {
             return JSON.stringify(input.value);
         } else {

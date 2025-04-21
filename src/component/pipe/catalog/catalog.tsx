@@ -1,7 +1,7 @@
 import "./catalog.css";
 
 import { classNames } from "@/util";
-import type { DataType, PipeMetadata, PipeCategory, DataTypeName } from "../type";
+import type { RefType, PipeMetadata, PipeCategory, DataTypeName } from "../type";
 
 export interface PipeCatalogProps {
     categories: PipeCategory[];

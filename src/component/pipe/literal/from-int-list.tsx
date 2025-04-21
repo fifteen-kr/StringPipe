@@ -1,5 +1,5 @@
 import { definePipe } from "../base";
-import { BytesDataType, StringDataType, UnderlyingBytesDataType } from "../type";
+import { BytesRef, StringRef, BytesDataType } from "../type";
 
 function parseIntList(input: string): number[] {
     const output: number[] = [];
@@ -36,7 +36,7 @@ export const BytesFromIntListPipe = definePipe<'string', 'bytes', {}>(
         inputType: 'string',
         outputType: 'bytes',
     },
-    async ({value}: StringDataType, params): Promise<UnderlyingBytesDataType> => {
+    async ({value}: StringRef, params): Promise<BytesDataType> => {
         return new Uint8Array(parseIntList(value));
     },
     {},

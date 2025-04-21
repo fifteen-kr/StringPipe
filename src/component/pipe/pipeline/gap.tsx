@@ -4,7 +4,7 @@ import { useCallback, useState } from "preact/hooks";
 
 import { classNames } from "@/util";
 
-import type { DataType, DataTypeName, PipeDefinition } from "../type";
+import type { RefType, DataTypeName, PipeDefinition } from "../type";
 import { PIPE_BY_ID, PIPE_CATEGORIES, PipeCatalog } from "../catalog";
 
 interface PipeGapProps {

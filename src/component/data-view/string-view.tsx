@@ -3,10 +3,10 @@ import "./common.css";
 import "./string-view.css";
 
 import { useCallback } from "preact/hooks";
-import { StringDataType } from "../pipe";
+import { StringRef } from "../pipe";
 
 export interface StringViewProps {
-    data: StringDataType;
+    data: StringRef;
 }
 
 export function StringView({data}: StringViewProps) {

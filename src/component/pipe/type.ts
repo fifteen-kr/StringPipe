@@ -1,36 +1,36 @@
 import type { ComponentType } from "preact/compat";
 
-export type UnderlyingStringDataType = string;
-export type UnderlyingBytesDataType = Uint8Array;
+export type StringDataType = string;
+export type BytesDataType = Uint8Array;
 
-export interface StringDataType {
+export interface StringRef {
     type: 'string';
-    value: UnderlyingStringDataType; // Maybe use Uint32Array instead of string?
+    value: StringDataType; // Maybe use Uint32Array instead of string?
 }
 
-export interface BytesDataType {
+export interface BytesRef {
     type: 'bytes';
-    value: UnderlyingBytesDataType;
+    value: BytesDataType;
 }
 
-export type DataType = StringDataType | BytesDataType;
-export type UnderlyingDataType = DataType['value'];
+export type RefType = StringRef | BytesRef;
+export type DataType = RefType['value'];
 
 export type DataTypeName = "string" | "bytes" | "all" | "null";
+export type ToRefType<T extends DataTypeName> = T extends "string" ? StringRef : T extends "bytes" ? BytesRef : T extends "all" ? RefType : null;
 export type ToDataType<T extends DataTypeName> = T extends "string" ? StringDataType : T extends "bytes" ? BytesDataType : T extends "all" ? DataType : null;
-export type ToUnderlyingDataType<T extends DataTypeName> = T extends "string" ? UnderlyingStringDataType : T extends "bytes" ? UnderlyingBytesDataType : T extends "all" ? UnderlyingDataType : null;
 
 export interface PipeFunction<InputTypeName extends DataTypeName = DataTypeName, OutputTypeName extends DataTypeName = DataTypeName> {
-    (input: ToDataType<InputTypeName>): Promise<ToDataType<OutputTypeName>>;
+    (data: ToRefType<InputTypeName>): Promise<ToRefType<OutputTypeName>>;
 }
 
 export interface PipeFunctionWithParams<InputTypeName extends DataTypeName, OutputTypeName extends DataTypeName, ParamsType extends object> {
-    (input: ToDataType<InputTypeName>, params: ParamsType): Promise<ToDataType<OutputTypeName>|ToUnderlyingDataType<OutputTypeName>>;
+    (data: ToRefType<InputTypeName>, params: ParamsType): Promise<ToRefType<OutputTypeName>|ToDataType<OutputTypeName>>;
 }
 
 export interface PipeProps {
-    inputValue?: DataType|null;
-    onOutputChange?: (value: DataType) => void;
+    inputValue?: RefType|null;
+    onOutputChange?: (value: RefType) => void;
 
     onClickRemove?: () => void;
 }

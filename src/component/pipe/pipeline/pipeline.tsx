@@ -3,7 +3,7 @@ import "./pipeline.css";
 import { useCallback, useState } from "preact/hooks";
 
 import { uuidv4 } from "@/util";
-import type { DataType, DataTypeName, PipeDefinition } from "../type";
+import type { RefType, DataTypeName, PipeDefinition } from "../type";
 
 import { PipeGap } from "./gap";
 import { PIPE_BY_ID } from "../catalog";
@@ -28,7 +28,7 @@ function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefini
 export function Pipeline() {
     const [pipes, setPipes] = useState<PipeState[]>(() => createDefaultPipeStates());
 
-    const handleOutputChange = useCallback((pipe_id: string, output: DataType) => {
+    const handleOutputChange = useCallback((pipe_id: string, output: RefType) => {
         setPipes((pipes) => pipes.map((pipe) => {
             if(pipe.id === pipe_id) {
                 return { ...pipe, output };

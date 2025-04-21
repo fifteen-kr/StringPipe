@@ -1,5 +1,5 @@
 import { definePipe } from "../base";
-import { DataType } from "../type";
+import { RefType } from "../type";
 
 export const DisplayPipe = definePipe(
     {
@@ -10,6 +10,6 @@ export const DisplayPipe = definePipe(
         inputType: 'all',
         outputType: 'all',
     },
-    (input: DataType) => Promise.resolve(input),
+    (input: RefType) => Promise.resolve(input),
     {},
 );

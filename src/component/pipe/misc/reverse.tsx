@@ -1,4 +1,4 @@
-import type { DataType } from "../type";
+import type { RefType } from "../type";
 import { definePipe } from "../base";
 import { isStringDataType } from "../data";
 
@@ -11,6 +11,6 @@ export const ReversePipe = definePipe(
         inputType: 'all',
         outputType: 'all',
     },
-    (data: DataType) => Promise.resolve(isStringDataType(data) ? [...data.value].reverse().join("") : data.value.toReversed()),
+    (data: RefType) => Promise.resolve(isStringDataType(data) ? [...data.value].reverse().join("") : data.value.toReversed()),
     {},
 );

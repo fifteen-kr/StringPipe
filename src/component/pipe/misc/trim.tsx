@@ -1,5 +1,5 @@
 import { definePipe } from "../base";
-import { StringDataType } from "../type";
+import { StringRef } from "../type";
 
 export const TrimStringPipe = definePipe(
     {
@@ -10,6 +10,6 @@ export const TrimStringPipe = definePipe(
         inputType: 'string',
         outputType: 'string',
     },
-    (data: StringDataType) => Promise.resolve(data.value.trim()),
+    (data: StringRef) => Promise.resolve(data.value.trim()),
     {},
 );

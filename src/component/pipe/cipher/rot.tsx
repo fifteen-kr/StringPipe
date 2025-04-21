@@ -1,4 +1,4 @@
-import type { DataType } from "../type";
+import type { RefType } from "../type";
 import { definePipe } from "../base";
 import { useCallback } from "preact/hooks";
 import { isStringDataType } from "../data";
@@ -18,7 +18,7 @@ export const RotPipe = definePipe(
         inputType: 'all',
         outputType: 'all',
     },
-    async (input: DataType, {amount}) => {
+    async (input: RefType, {amount}) => {
         amount %= 26;
         if(amount < 0) amount += 26;
 

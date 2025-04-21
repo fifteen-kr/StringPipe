@@ -7,11 +7,11 @@ import { TextArea } from "@/component/common/textarea";
 import { BytesView, StringView } from "@/component/data-view";
 import { classNames } from "@/util";
 
-import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToDataType, PipeFunction, PipeFunctionWithParams, ToUnderlyingDataType } from "./type";
+import type { PipeProps, PipeMetadata, PipeDefinition, DataTypeName, ToRefType, PipeFunction, PipeFunctionWithParams, ToDataType } from "./type";
 import { getDataTypeName, isBytesDataType, isStringDataType, normalizeData, validateValue } from "./data";
 
 interface DisplayComponentProps<D extends DataTypeName> {
-    data: ToDataType<D>;
+    data: ToRefType<D>;
 }
 
 function DefaultDisplayComponent<D extends DataTypeName>({data}: DisplayComponentProps<D>) {
@@ -27,7 +27,7 @@ export type BasePipeProps<InputTypeName extends DataTypeName, OutputTypeName ext
     outputType: OutputTypeName;
 
     pipeFunction?: PipeFunction<InputTypeName, OutputTypeName>;
-    outputView?: ComponentType<{data: ToDataType<OutputTypeName>}>|null;
+    outputView?: ComponentType<{data: ToRefType<OutputTypeName>}>|null;
 
     className?: string;
 
@@ -56,7 +56,7 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
     } = props;
 
     const [override_input, setOverrideInput] = useState(false);
-    const [output_value, setOutputValue] = useState<ToDataType<OutputTypeName>|null>(null);
+    const [output_value, setOutputValue] = useState<ToRefType<OutputTypeName>|null>(null);
     const [last_error, setLastError] = useState<unknown|null>(null);
 
     const onOutputChangeRef = useRef(onOutputChange);
@@ -66,7 +66,7 @@ export function BasePipe<InputTypeName extends DataTypeName, OutputTypeName exte
         if(!pipeFunction) return;
 
         (async () => {
-            let pipe_value: ToDataType<OutputTypeName>;
+            let pipe_value: ToRefType<OutputTypeName>;
 
             try {
                 if(!validateValue(input_type, input_value)) {
@@ -133,8 +133,8 @@ export function definePipe<InputTypeName extends DataTypeName, OutputTypeName ex
                 setParams((params) => ({...params, ...new_params}));
             }, [setParams]);
 
-            const callPipeFunction = useCallback(async (input: ToDataType<InputTypeName>): Promise<ToDataType<OutputTypeName>>  => {
-                if(input == null) return null as ToDataType<OutputTypeName>;
+            const callPipeFunction = useCallback(async (input: ToRefType<InputTypeName>): Promise<ToRefType<OutputTypeName>>  => {
+                if(input == null) return null as ToRefType<OutputTypeName>;
 
                 const result = await pipeFunction(input, params);
                 return normalizeData(result);

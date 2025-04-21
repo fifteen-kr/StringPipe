@@ -3,10 +3,10 @@ import "./bytes-view.css";
 
 import { useCallback, useMemo } from "preact/hooks";
 import { saveFile } from "@/lib/file-io";
-import { BytesDataType } from "../pipe";
+import { BytesRef } from "../pipe";
 
 export interface BytesViewProps {
-    data: BytesDataType;
+    data: BytesRef;
 }
 
 export function BytesView({data}: BytesViewProps) {
