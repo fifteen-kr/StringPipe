@@ -3,6 +3,7 @@ import { DisplayPipe } from "./display";
 import { WcPipe } from "./wc";
 import { ReversePipe } from "./reverse";
 import { TrimStringPipe } from "./trim";
+import { ChangeEndianPipe } from "./change-endian";
 
 export const PIPES_MISC: PipeCategory = {
     id: 'misc',
@@ -14,5 +15,6 @@ export const PIPES_MISC: PipeCategory = {
         WcPipe,
         ReversePipe,
         TrimStringPipe,
+        ChangeEndianPipe,
     ],
 };
