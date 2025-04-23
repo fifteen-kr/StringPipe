@@ -1,6 +1,6 @@
 import { definePipe } from "../base";
 import { isStringDataType } from "../data";
-import { RefType, StringRef, StringDataType } from "../type";
+import { RefType, StringDataType } from "../type";
 
 export const ToPythonLiteralPipe = definePipe(
     {
