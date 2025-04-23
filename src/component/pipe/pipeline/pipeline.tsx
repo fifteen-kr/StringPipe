@@ -16,10 +16,10 @@ function getCastPipe(from_type: DataTypeName, to_type: DataTypeName): PipeDefini
 
     switch(`${from_type}-${to_type}`) {
         case "string-bytes": {
-            return PIPE_BY_ID.get("unicode-encode") ?? null;
+            return PIPE_BY_ID.get("utf-encode") ?? null;
         }
         case "bytes-string": {
-            return PIPE_BY_ID.get("unicode-decode") ?? null;
+            return PIPE_BY_ID.get("utf-decode") ?? null;
         }
         default: return null;
     }

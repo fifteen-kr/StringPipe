@@ -1,1 +1,2 @@
-export type * from "./type";
+export * from "./type";
+export * from "./utf";
