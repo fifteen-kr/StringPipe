@@ -20,6 +20,18 @@ export function validateValue<D extends DataTypeName>(data_type: D, value: RefTy
     }
 }
 
+export function* iterateIntegerValues(value: RefType|null|undefined): Generator<number> {
+    if(value == null) return;
+
+    if(isStringDataType(value)) {
+        for(const char of value.value) {
+            yield char.codePointAt(0)!;
+        }
+    } else {
+        yield* value.value;
+    }
+}
+
 export function getDataTypeName(value: RefType|null|undefined, hint_type_name?: DataTypeName): DataTypeName {
     if(value == null) return hint_type_name === 'all' ? 'string' : (hint_type_name ?? 'null');
     if(isStringDataType(value)) return "string";
