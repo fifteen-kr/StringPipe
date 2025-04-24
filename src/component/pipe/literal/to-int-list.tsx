@@ -1,22 +1,13 @@
 import { useCallback, useId } from "preact/hooks";
 
 import { definePipe } from "../base";
-import { BytesRef, RefType, StringRef, StringDataType } from "../type";
+import { RefType, StringDataType } from "../type";
 import { isStringDataType } from "../data";
 
-const INT_LITERAL_TYPES = [
-    {id: 'hex', name: 'Hexadecimal (0xAB)', prefix: "0x", base: 16},
-    {id: 'dec', name: 'Decimal (171)', prefix: "", base: 10},
-    {id: 'oct', name: 'Octal (0o253)', prefix: "0o", base: 8},
-    {id: 'bin', name: 'Binary (0b10101011)', prefix: "0b", base: 2}
-] as const;
-
-type IntLiteralType = (typeof INT_LITERAL_TYPES)[number]['id'];
-
-const INT_LITERAL_TYPE_BY_ID = new Map<IntLiteralType, (typeof INT_LITERAL_TYPES)[number]>(INT_LITERAL_TYPES.map((t) => [t.id, t]));
+import { INT_RADIX_DATA, INT_RADIX_DATA_BY_ID, IntRadixType, SelectIntRadix } from "./int-radix";
 
 interface ToIntListParams {
-    int_literal_type: IntLiteralType,
+    int_radix: IntRadixType
     attach_int_prefix: boolean,
     is_prefix_uppercase: boolean,
     is_uppercase: boolean,
@@ -46,13 +37,13 @@ export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
     },
     async (input: RefType, params: ToIntListParams): Promise<StringDataType> => {
         const int_list = valueToIntList(input);
-        const int_literal_type = INT_LITERAL_TYPE_BY_ID.get(params.int_literal_type)!;
+        const int_radix = INT_RADIX_DATA_BY_ID.get(params.int_radix)!;
 
         let pad_zero_mul = 0;
-        if(params.pad_zeros) pad_zero_mul = int_literal_type.base === 16 ? 2 : int_literal_type.base === 2 ? 8 : 0;
+        if(params.pad_zeros) pad_zero_mul = int_radix.base === 16 ? 2 : int_radix.base === 2 ? 8 : 0;
 
         return `${params.prefix}${int_list.map((v) => {
-            let digits = v.toString(int_literal_type.base);
+            let digits = v.toString(int_radix.base);
             if(params.is_uppercase) digits = digits.toUpperCase();
             if(pad_zero_mul > 1) {
                 let rem = digits.length % pad_zero_mul;
@@ -61,12 +52,12 @@ export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
 
             if(!params.attach_int_prefix) return digits;
 
-            const prefix = int_literal_type.prefix;
+            const prefix = int_radix.prefix;
             return `${params.is_prefix_uppercase ? prefix.toUpperCase() : prefix}${digits}`;
         }).join(params.separator)}${params.postfix}`;
     },
     {
-        int_literal_type: 'dec',
+        int_radix: 'dec',
         attach_int_prefix: true,
         is_prefix_uppercase: false,
         is_uppercase: true,
@@ -77,8 +68,8 @@ export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
         postfix: "]",
     },
     ({params, onChangeParams}) => {
-        const handleOnChangeIntLiteralType = useCallback((int_literal_type: ToIntListParams['int_literal_type']) => {
-            onChangeParams({int_literal_type});
+        const handleOnChangeIntLiteralType = useCallback((int_radix: IntRadixType) => {
+            onChangeParams({int_radix});
         }, [onChangeParams]);
 
         const handleOnChangeAttachIntPrefix = useCallback((e: Event) => {
@@ -109,17 +100,17 @@ export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
             onChangeParams({postfix: (e.currentTarget as HTMLInputElement).value});
         }, [onChangeParams]);
 
-        const {int_literal_type} = params;
+        const {int_radix} = params;
 
         return <>
             <div className="sp-pipe-params-row">
-                <IntLiteralTypeSelect value={params.int_literal_type} onChange={handleOnChangeIntLiteralType}/>
+                <SelectIntRadix value={params.int_radix} onChange={handleOnChangeIntLiteralType}/>
             </div>
             <div className="sp-pipe-params-row">
-                { (int_literal_type !== 'dec') &&<label><input type="checkbox" checked={params.attach_int_prefix} onChange={handleOnChangeAttachIntPrefix}/> Attach Int Prefix</label> }
-                { (int_literal_type !== 'dec') && <label><input type="checkbox" checked={params.is_prefix_uppercase} onChange={handleOnChangeIsPrefixUppercase}/> Uppercase Prefix</label> }
-                { (int_literal_type === 'hex') && <label><input type="checkbox" checked={params.is_uppercase} onChange={handleOnChangeIsUppercase}/> Uppercase Int</label> }
-                { (int_literal_type === 'hex' || int_literal_type === 'bin') && <label><input type="checkbox" checked={params.pad_zeros} onChange={handleOnChangePadZeros}/> Pad Zeros</label> }
+                { (int_radix !== 'dec') &&<label><input type="checkbox" checked={params.attach_int_prefix} onChange={handleOnChangeAttachIntPrefix}/> Attach Int Prefix</label> }
+                { (int_radix !== 'dec') && <label><input type="checkbox" checked={params.is_prefix_uppercase} onChange={handleOnChangeIsPrefixUppercase}/> Uppercase Prefix</label> }
+                { (int_radix === 'hex') && <label><input type="checkbox" checked={params.is_uppercase} onChange={handleOnChangeIsUppercase}/> Uppercase Int</label> }
+                { (int_radix === 'hex' || int_radix === 'bin') && <label><input type="checkbox" checked={params.pad_zeros} onChange={handleOnChangePadZeros}/> Pad Zeros</label> }
             </div>
             <div className="sp-pipe-params-row">
                 <label>Separator: <input type="text" size={3} value={params.separator} onInput={handleOnChangeSeparator}/></label>
@@ -129,22 +120,3 @@ export const ToIntListPipe = definePipe<'all', 'string', ToIntListParams>(
         </>;
     },
 );
-
-interface IntLiteralTypeSelectProps {
-    value: IntLiteralType;
-    onChange: (value: IntLiteralType) => void;
-}
-
-function IntLiteralTypeSelect({value, onChange}: IntLiteralTypeSelectProps) {
-    const group_id = useId();
-
-    // Create a list of radio buttons.
-    return <>
-        {INT_LITERAL_TYPES.map((type_def) => {
-            return <label key={type_def.id}>
-                <input type="radio" name={group_id} value={type_def.id} checked={value === type_def.id} onChange={() => onChange(type_def.id)}/>
-                &nbsp;{type_def.name}
-            </label>;
-        })}
-    </>;
-}
