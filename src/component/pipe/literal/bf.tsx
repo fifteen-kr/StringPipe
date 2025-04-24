@@ -89,17 +89,18 @@ function generateBFPrintCode(bytes: BytesDataType, {buffer_size, wraparound, cle
 
     const accToInd1 = (op: '+'|'-', amount: number) => {
         if(amount <= 0) return;
-        if(amount < 16) {
+        if(amount < 15) {
             moveTo(1);
             code_segments.push(op.repeat(amount));
             return;
         }
 
-        const group = amount >> 3;
-        const remainder = amount & 7;
+        const batch = amount % 8 === 0 ? 8 : amount % 5 === 0 ? 5 : 8;
+        const group = Math.floor(amount/batch);
+        const remainder = amount % batch;
 
         moveTo(0);
-        code_segments.push("++++++++[->" + op.repeat(group) + "<]");
+        code_segments.push("+".repeat(batch), "[->" + op.repeat(group) + "<]");
 
         moveTo(1);
         code_segments.push(op.repeat(remainder));
