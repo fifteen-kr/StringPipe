@@ -28,6 +28,7 @@ export function escapeConfusingCharacters(s: string): string {
         const ascii_name = ASCII_CONTROL_NAMES.get(char);
         if(ascii_name != null) {
             result += `<${ascii_name} (U+${char.codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')})>`;
+            continue;
         }
 
         const escaped = ESCAPED_CONFUSING_CHARACTERS.get(char);
